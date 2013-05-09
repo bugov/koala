@@ -1,0 +1,41 @@
+% layout 'default';
+% title 'edit user ' . $user->username;
+
+<form action="<%= url_for 'admin_user_edit', id => $user->id %>" method="post">
+<table>
+  <tr>
+    <td colspan=2 class="bold">User #<%= $user->id %></td>
+  </tr>
+  <tr>
+    <td>Username</td>
+    <td><input type="text" name="username" value="<%= $user->username %>"></td>
+  </tr>
+  <tr>
+    <td>Password</td>
+    <td><input type="text" name="password"></td>
+  </tr>
+  <tr>
+    <td>E-mail</td>
+    <td><input type="text" name="email" value="<%= $user->email %>"></td>
+  </tr>
+  <tr>
+    <td>Role</td>
+    <td><input type="text" name="role" value="<%= $user->role %>"></td>
+  </tr>
+  <tr>
+    <td>Create date (Unix time)</td>
+    <td><input type="text" name="createAt" value="<%= $user->createAt %>"></td>
+  </tr>
+  <tr>
+    <td>User info</td>
+    <td>
+      <textarea name="info"><%= $user->info %></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td colspan=2>
+      <button class="btn alignright" type="submit">Edit</button>
+    </td>
+  </tr>
+</table>
+</form>
