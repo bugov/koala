@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <meta keywords="<%= content_for 'keywords' %>">
+    <meta description="<%= content_for 'description' %>">
+    %= stylesheet '/css/bootstrap.min.css'
+    %= stylesheet '/css/bootstrap-responsive.min.css'
+    %= stylesheet '/css/style.css'
+    %= javascript '/js/html5.js'
+    %= javascript '/js/jquery.min.js'
+    %= javascript '/js/bootstrap.min.js'
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title"><%= title %></h1>
+      %= content
+    </div>
+  </body>
+</html>

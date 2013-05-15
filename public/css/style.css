@@ -1,46 +1,55 @@
 body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-}
-
-.zf-green {
-    color: #68b604;
-}
-
-.btn-success {
-  background-color: #57a900;
-  background-image: -moz-linear-gradient(top, #70d900, #57a900);
-  background-image: -ms-linear-gradient(top, #70d900, #57a900);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70d900), to(#57a900));
-  background-image: -webkit-linear-gradient(top, #70d900, #57a900);
-  background-image: -o-linear-gradient(top, #70d900, #57a900);
-  background-image: linear-gradient(top, #70d900, #57a900);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#70d900', endColorstr='#57a900', GradientType=0);
-}
-
-.btn-success:hover,
-.btn-success:active,
-.btn-success.active,
-.btn-success.disabled,
-.btn-success[disabled] {
-  background-color: #57a900;
-}
-
-.btn-success:active, .btn-success.active {
-  background-color: #57a900;
+  padding-top: 60px;
+  padding-bottom: 40px;
 }
 
 div.container a.brand {
-    background: url("../img/zf2-logo.png") no-repeat scroll 0 10px transparent;
-    margin-left: 0;
-    padding: 8px 20px 12px 40px;
+  margin-left: 0;
+  padding: 8px 20px 12px 40px;
 }
 
 .wide {width: 100%; margin: 0px 10px;}
 .alignleft {float: left}
 .alignright {float: right}
 .aligncenter {margin: 0px auto}
-.table tr:hover {background: #CDE2A3; cursor: pointer}
-.table th {font-width: 600; text-align: left; cursor: default}
+.admin .table tr:hover {background: #CDE2A3; cursor: pointer}
+.admin .table th {font-width: 600; text-align: left; cursor: default}
 .bold {font-weight: 600}
-.table td label { text-align: right; }
+.admin .table td label { text-align: right; padding-top: 5px; }
+body .navbar .navbar-inner {
+  /* Gradient */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0E270E', endColorstr='#1E471E'); /* for IE */
+  background: -webkit-gradient(linear, left top, left bottom, from(#0E270E), to(#1E471E)); /* for webkit browsers */
+  background: -moz-linear-gradient(top,  #0E270E,  #1E471E); /* for firefox 3.6+ */
+}
+body .navbar .navbar-inner .brand {
+  color: #ffffff;
+  font-weight: 400;
+  float: left;
+  font-size: 24px;
+  margin: 10px 30px;
+  padding: 0px;
+}
+body .navbar .navbar-inner .brand img {
+  width: 24px;
+  height: 24px;
+  margin: -5px 0px;
+}
+.navbar .nav>li>a {
+  font-size: 18px;
+}
+.admin .title {
+  margin-left: 30px;
+  font-size: 24px;
+  font-weight: 400;
+}
+.paginator {
+  text-align: center;
+  margin-top: 20px;
+}
+.paginator span, .paginator a {
+  padding: 6px 10px;
+}
+.paginator span { background: #dddddd; }
+.paginator>a { color: #3E673E; }
+.paginator>a:hover { background: #5E875E; color: #ffffff; text-decoration: none; }

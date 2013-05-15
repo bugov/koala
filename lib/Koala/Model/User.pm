@@ -27,3 +27,23 @@ sub object_class { 'Koala::Model::User' }
 __PACKAGE__->make_manager_methods( 'users' );
 
 1;
+
+__END__
+
+=pod
+
+=head1 Database structure
+
+  CREATE TABLE IF NOT EXISTS `user` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `username` varchar(32) NOT NULL,
+    `email` varchar(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    `password` varchar(40) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    `role` int(4) NOT NULL,
+    `create_at` int(11) unsigned NOT NULL,
+    `info` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `username` (`username`,`email`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+=cut

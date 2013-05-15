@@ -2,18 +2,18 @@ package Koala::Controller::Admin::Page;
 use Mojo::Base 'Mojolicious::Controller';
 use Koala::Model::Page;
 
+my $size = 20;
+
 sub approve {
   
 }
 
 sub list {
   my $self = shift;
-  my $page_list =  Koala::Model::Page::Manager->get_pages(
-    sort_by => 'id', limit => 50,
-    offset => 50 * int $self->param('page')
-  );
+  my $page = int $self->param('page');
+  my $page_list = Koala::Model::Page::Manager->get_pages(sort_by => 'id', limit => $size, offset => $size * ($page-1));
   my $page_count = Koala::Model::Page::Manager->get_pages_count();
-  $self->render('page/admin/list', page_list => $page_list, page_count => $page_count);
+  $self->render('page/admin/list', page_list => $page_list, page_count => $page_count, limit => $size);
 }
 
 sub show {

@@ -2,14 +2,17 @@ package Koala::Controller::Admin::User;
 use Mojo::Base 'Mojolicious::Controller';
 use Koala::Model::User;
 
+my $list_size = 20;
+
 sub list {
   my $self = shift;
+  my $page = int $self->param('page');
   my $user_list = Koala::Model::User::Manager->get_users(
-    sort_by => 'id', limit => 50,
-    offset => 50 * int $self->param('page')
+    sort_by => 'id', limit => $list_size,
+    offset => $list_size * ($page-1)
   );
   my $user_count = Koala::Model::User::Manager->get_users_count();
-  $self->render('user/admin/list', user_list => $user_list, user_count => $user_count);
+  $self->render('user/admin/list', user_list => $user_list, user_count => $user_count, limit => $list_size);
 }
 
 sub show {

@@ -1,5 +1,5 @@
 % layout 'default';
-% title 'user list';
+% title 'User list';
 
 <table class="wide table">
   <tr>
@@ -18,8 +18,10 @@
     <td><%= ($user->password ? 'defined' : 'undefined') %></td>
     <td><%= $user->email %></td>
     <td><%= $user->role %></td>
-    <td><%= localtime $user->create_at %></td>
+    <td><%= dt $user->create_at %></td>
     <td><%= substr $user->info, 64 %> <%= (length $user->info > 64 ? '...' : '') %></td>
   </tr>
 <% } %>
 </table>
+
+%= paginator 'admin_user_list', int stash('page'), $user_count, $limit

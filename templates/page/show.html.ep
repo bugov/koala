@@ -1,2 +1,16 @@
-% layout 'default';
+% layout 'front';
 % title $page->title;
+
+% content_for keywords => begin
+%= $page->keywords;
+% end
+% content_for description => begin
+%= $page->description;
+% end
+
+<article>
+  <p class="bold">
+    %= $page->legend
+  </p>
+  %= $page->text
+</article>

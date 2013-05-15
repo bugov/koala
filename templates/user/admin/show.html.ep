@@ -1,40 +1,38 @@
 % layout 'default';
-% title 'edit user ' . $user->username;
+% title 'Edit user — ' . $user->username . ' #' . $user->id;
 
 <form action="<%= url_for 'admin_user_edit', id => $user->id %>" method="post">
-<table>
+<table class="table">
   <tr>
-    <td colspan=2 class="bold">User #<%= $user->id %></td>
+    <td><label class="span2">Username</label></td>
+    <td><input class="span10" type="text" name="username" value="<%= $user->username %>"></td>
   </tr>
   <tr>
-    <td>Username</td>
-    <td><input type="text" name="username" value="<%= $user->username %>"></td>
+    <td><label class="span2">Password</label></td>
+    <td><input class="span10" type="text" name="password"></td>
   </tr>
   <tr>
-    <td>Password</td>
-    <td><input type="text" name="password"></td>
+    <td><label class="span2">E-mail</label></td>
+    <td><input class="span10" type="text" name="email" value="<%= $user->email %>"></td>
   </tr>
   <tr>
-    <td>E-mail</td>
-    <td><input type="text" name="email" value="<%= $user->email %>"></td>
-  </tr>
-  <tr>
-    <td>Role</td>
+    <td><label class="span2">Role</label></td>
     <td><%= role_list $user->role %></td>
   </tr>
   <tr>
-    <td>Create date</td>
-    <td><input type="text" name="create_at" value="<%= dt $user->create_at %>"></td>
+    <td><label class="span2">Create date</label></td>
+    <td><input class="span10" type="text" name="create_at" value="<%= dt $user->create_at %>"></td>
   </tr>
   <tr>
-    <td>User info</td>
+    <td><label class="span2">User info</label></td>
     <td>
-      <textarea name="info"><%= $user->info %></textarea>
+      <textarea class="span10" name="info"><%= $user->info %></textarea>
     </td>
   </tr>
   <tr>
-    <td colspan=2>
-      <button class="btn alignright" type="submit">Edit</button>
+    <td colspan=2 style="text-align: center">
+      <button class="btn" type="submit">Edit</button>
+      <button class="btn" type="reset">Cancel</button>
     </td>
   </tr>
 </table>

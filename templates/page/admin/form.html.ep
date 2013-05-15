@@ -59,7 +59,7 @@
       % if ($page) {
       <a class="btn" href="<%= url_for 'page_show', url => $page->url, id => $page->id %>">View page</a>
       % }
-      <button class="btn" type="reset">Clear form</button>
+      <button class="btn" type="reset">Cancel</button>
     </td>
   </tr>
 </table>
