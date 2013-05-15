@@ -8,8 +8,8 @@ __PACKAGE__->meta->setup(
     username => { type => 'varchar', length => 32 },
     email    => { type => 'varchar', not_null => 1, length => 64 },
     password => { type => 'varchar', not_null => 1, length => 40 },
-    role     => { type => 'varchar', length => 32, default => 'user' },
-    createAt => { type => 'integer', not_null => 1 },
+    role     => { type => 'integer', default => 50 }, # 50 is a user role
+    create_at=> { type => 'integer', not_null => 1 },
     info     => { type => 'text', default => '' },
   ],
   pk_columns => 'id',

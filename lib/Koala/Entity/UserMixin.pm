@@ -3,11 +3,11 @@ use Mojo::Base -base;
 use Digest::MD5 "md5_hex";
 
 
-# Method: getSessionData
+# Method: get_session_data
 #   Get data, which we can use in session.
 # Return: HashRef
 
-sub getSessionData {
+sub get_session_data {
   my $self = shift;
   return {
     id => $self->id,
@@ -18,11 +18,22 @@ sub getSessionData {
 }
 
 
-# Method: newPassword
+# Method: set_role
+#   Set role by name
+# Parameter: $role - Str
+
+sub set_role {
+  my ($self, $role) = @_;
+  die 'Invalid role' unless exists $self->roles->{$role};
+  $self->role = $self->roles->{$role};
+}
+
+
+# Method: new_password
 #   Change user's password
 # Parameter: $password - Str
 
-sub newPassword {
+sub new_password {
   my ($self, $password) = @_;
   my $salt = substr md5_hex(rand), 0, 7;
   my $hex = md5_hex($salt.$password);
@@ -30,12 +41,12 @@ sub newPassword {
 }
 
 
-# Method: testPassword
+# Method: test_password
 #   Does some string eq password
 # Parameter: $password - Str
 # Return: 1|0 - Boolean
 
-sub testPassword {
+sub test_password {
   my ($self, $password) = @_;
   my ($salt, $hex) = split /\$/, $self->password;
   return 1 if md5_hex($salt.$password) eq $hex;
@@ -53,52 +64,52 @@ sub testPassword {
 
 has 'roles' => sub {{
   guest   => 0,
-  inactive=> 10,
-  user    => 20,
-  staff   => 30,
+  inactive=> 40,
+  user    => 50,
+  staff   => 80,
   admin   => 99
 }};
 
 
-sub isGuest {
+sub is_guest {
   my $self = shift;
   return 1 unless defined $self->role;
-  return 1 if $self->roles->{ $self->role } < $self->roles->{'inactive'};
+  return 1 if $self->role < $self->roles->{'inactive'};
   return 0;
 }
 
-sub isRegistred {
+sub is_registred {
   my $self = shift;
   return 0 unless defined $self->role;
-  return 1 if $self->roles->{ $self->role } > $self->roles->{'guest'};
+  return 1 if $self->role > $self->roles->{'guest'};
   return 0;
 }
 
-sub isActive {
+sub is_active {
   my $self = shift;
   return 0 unless defined $self->role;
-  return 1 if $self->roles->{ $self->role } >= $self->roles->{'user'};
+  return 1 if $self->role >= $self->roles->{'user'};
   return 0;
 }
 
-sub isUser {
+sub is_user {
   my $self = shift;
   return 0 unless defined $self->role;
-  return 1 if $self->roles->{ $self->role } >= $self->roles->{'user'};
+  return 1 if $self->role >= $self->roles->{'user'};
   return 0;
 }
 
-sub isStaff {
+sub is_staff {
   my $self = shift;
   return 0 unless defined $self->role;
-  return 1 if $self->roles->{ $self->role } >= $self->roles->{'staff'};
+  return 1 if $self->role >= $self->roles->{'staff'};
   return 0;
 }
 
-sub isAdmin {
+sub is_admin {
   my $self = shift;
   return 0 unless defined $self->role;
-  return 1 if $self->roles->{ $self->role } >= $self->roles->{'admin'};
+  return 1 if $self->role >= $self->roles->{'admin'};
   return 0;
 }
 

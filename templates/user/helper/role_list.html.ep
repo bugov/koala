@@ -1,0 +1,5 @@
+<select name="role">
+% while (my($k, $v) = each %$role_list) {
+  <option <% if ($v == $default) { %> selected="selected" <% } %> value="<%= $v %>"><%= $k %></option>
+% }
+</select>

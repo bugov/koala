@@ -43,3 +43,4 @@ div.container a.brand {
 .table tr:hover {background: #CDE2A3; cursor: pointer}
 .table th {font-width: 600; text-align: left; cursor: default}
 .bold {font-weight: 600}
+.table td label { text-align: right; }

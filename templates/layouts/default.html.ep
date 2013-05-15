@@ -14,7 +14,7 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-      <% if (user->isRegistred()) { %>
+      <% if (user->is_registred()) { %>
         <button class="btn alignright" data-href="<%= url_for 'user_home' %>"><%= user->username %></button>
       <% } else { %>
         <a href="<%= url_for 'user_login_form' %>">Sign in</a> /

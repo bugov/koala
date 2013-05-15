@@ -20,11 +20,11 @@
   </tr>
   <tr>
     <td>Role</td>
-    <td><input type="text" name="role" value="<%= $user->role %>"></td>
+    <td><%= role_list $user->role %></td>
   </tr>
   <tr>
-    <td>Create date (Unix time)</td>
-    <td><input type="text" name="createAt" value="<%= $user->createAt %>"></td>
+    <td>Create date</td>
+    <td><input type="text" name="create_at" value="<%= dt $user->create_at %>"></td>
   </tr>
   <tr>
     <td>User info</td>

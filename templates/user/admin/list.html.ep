@@ -18,7 +18,7 @@
     <td><%= ($user->password ? 'defined' : 'undefined') %></td>
     <td><%= $user->email %></td>
     <td><%= $user->role %></td>
-    <td><%= localtime $user->createAt %></td>
+    <td><%= localtime $user->create_at %></td>
     <td><%= substr $user->info, 64 %> <%= (length $user->info > 64 ? '...' : '') %></td>
   </tr>
 <% } %>

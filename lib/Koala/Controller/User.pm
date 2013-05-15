@@ -5,8 +5,8 @@ use Koala::Model::User;
 sub login {
   my $self = shift;
   my $user = Koala::Model::User->new(username => $self->param('username'))->load;
-  if ($user->testPassword($self->param('password'))) {
-    return $self->session($user->getSessionData())->redirect_to('user_home')
+  if ($user->test_password($self->param('password'))) {
+    return $self->session($user->get_session_data())->redirect_to('user_home')
   }
   $self->redirect_to('user_login_form');
 }
@@ -16,23 +16,23 @@ sub reg {
   my $user = Koala::Model::User->new(
     username => $self->param('username'),
     email => $self->param('email'),
-    createAt => time
+    create_at => time
   );
-  $user->newPassword($self->param('password'));
+  $user->new_password($self->param('password'));
   $user->save();
   $self->redirect_to('user_login_form');
 }
 
 sub home {
   my $self = shift;
-  my $user = eval{Koala::Model::User->new(id => $self->session('id'))->load};
-  return $self->render(user => $user) unless $@;
-  return $self->render(template => 'not_found', code => 401);
+  my $user = eval{Koala::Model::User->new(id => $self->user->id)->load}
+    or return $self->render(template => 'not_found', code => 401);
+  return $self->render(user => $user);
 }
 
 sub logout {
   my $self = shift;
-  $self->session(userId => 0)->redirect_to('user_login_form');
+  $self->session(id => 0)->redirect_to('user_login_form');
 }
 
 1;

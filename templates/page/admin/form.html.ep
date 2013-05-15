@@ -1,0 +1,66 @@
+% layout 'default';
+% no strict;
+% $page = undef unless defined $page;
+% title ( $page ? 'Edit page' : 'Create new page' );
+
+<form action="<%= ($page ? url_for('admin_page_edit', id => $page->id) : url_for('admin_page_create')) %>" method="post">
+<table class="table edit-table">
+  <tr>
+    <td><label class="span2">Title</label></td>
+    <td><input class="span10" name="title" type="text" placeholder="Title" value="<%= $page ? $page->title : '' %>"></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Url</label></td>
+    <td><input class="span10" name="url" type="text" placeholder="Url"  value="<%= $page ? $page->url : '' %>"></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Legend</label></td>
+    <td><textarea class="span10" name="legend" placeholder="Legend"><%= $page ? $page->legend : '' %></textarea></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Text</label></td>
+    <td><textarea class="span10" name="text" placeholder="Text"><%= $page ? $page->text : '' %></textarea></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Keywords</label></td>
+    <td><textarea class="span10" name="keywords" placeholder="Keywords"><%= $page ? $page->keywords : '' %></textarea></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Description</label></td>
+    <td><textarea class="span10" name="description" placeholder="Description"><%= $page ? $page->description : '' %></textarea></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Status</label></td>
+    <td><%= status_list($page ? $page->status : 'new') %></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Author</label></td>
+    <td><%= user_list 'staff', ($page ? $page->author_id : 0), 'author_id' %></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Approver</label></td>
+    <td><%= user_list 'admin', ($page ? $page->approver_id : 0), 'approver_id' %></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Owner</label></td>
+    <td><%= user_list 'user', ($page ? $page->owner_id : 0), 'owner_id' %></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Create date</label></td>
+    <td><input class="span10" name="create_at" type="text" placeholder="Create date"  value="<%= dt($page ? $page->create_at : undef) %>"></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Modify date</label></td>
+    <td><input class="span10" name="modify_at" type="text" placeholder="Modify date"  value="<%= dt() %>"></td>
+  </tr>
+  <tr>
+    <td colspan=2 style="text-align: center">
+      <button class="btn" type="submit"><%= $page ? 'Edit' : 'Create' %> page</button>
+      % if ($page) {
+      <a class="btn" href="<%= url_for 'page_show', url => $page->url, id => $page->id %>">View page</a>
+      % }
+      <button class="btn" type="reset">Clear form</button>
+    </td>
+  </tr>
+</table>
+</form>
