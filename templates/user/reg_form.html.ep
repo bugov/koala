@@ -1,15 +1,15 @@
-% layout 'default';
+% layout 'front';
 % title 'Sign Up';
 
 <form method="post" action="<%= url_for 'user_reg' %>">
 <table>
     <tr>
         <td>Name</td>
-        <td><input name="username"></td>
+        <td><input type="text" name="username"></td>
     </tr>
     <tr>
         <td>E-mail</td>
-        <td><input name="email"></td>
+        <td><input type="text" name="email"></td>
     </tr>
     <tr>
         <td>Password</td>

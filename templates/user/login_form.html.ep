@@ -1,4 +1,4 @@
-% layout 'default';
+% layout 'front';
 % title 'Login form';
 
 <form method="post" action="<%= url_for 'user_login' %>">

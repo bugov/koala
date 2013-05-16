@@ -53,3 +53,6 @@ body .navbar .navbar-inner .brand img {
 .paginator span { background: #dddddd; }
 .paginator>a { color: #3E673E; }
 .paginator>a:hover { background: #5E875E; color: #ffffff; text-decoration: none; }
+.head3 { font-size: 18px; margin: 5px 0px; }
+.hide { display: none; }
+.comment { border-bottom: 1px solid #ccc; margin-bottom: 10px; }

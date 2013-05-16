@@ -51,6 +51,13 @@ our %possible_status = (
 );
 
 
+sub is_opened {
+  my $self = shift;
+  return 1 if $self->status >= $possible_status{'opened'};
+  return 0;
+}
+
+
 # Method: set_status
 #   set status by name
 # Parameter: status - Str

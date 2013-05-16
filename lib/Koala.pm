@@ -38,6 +38,8 @@ sub startup {
     $u->post(':id')->to('#edit')->name('admin_user_edit');
   
   # Page
+  $r->post('page/:id/comment')->to('page#comment', namespace => 'Koala::Controller')->name('page_comment');
+  $r->get('page/:id/comment/load')->to('page#load', namespace => 'Koala::Controller')->name('page_comment_load');
   $r->get(':url/:id')->to('page#show', namespace => 'Koala::Controller')->name('page_show');
   # Page for Admins
   my $p = $admin->route('page')->to('page#', namespace => 'Koala::Controller::Admin');
