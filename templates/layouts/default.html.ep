@@ -27,6 +27,9 @@
               <li>
                 <a href="<%= url_for 'admin_user_list' %>"><%= 'Users' %></a>
               </li>
+              <li>
+                <a href="<%= url_for 'admin_page_comments' %>"><%= 'Comments' %></a>
+              </li>
             </ul>
           </div>
       <% if (user->is_registred()) { %>

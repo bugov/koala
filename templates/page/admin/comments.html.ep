@@ -1,0 +1,25 @@
+% layout 'default';
+% title 'Comment list';
+
+<table class="wide table">
+  <tr>
+    <th>#</th>
+    <th>Page</th>
+    <th>User</th>
+    <th>Status</th>
+    <th>Create date</th>
+    <th>Text</th>
+  </tr>
+<% for my $page (@$comment_list) { %>
+  <tr>
+    <td><%= $page->id %></td>
+    <td><%= $page->page->title %></td>
+    <td><%= $page->username %> <%= ($page->author_id ? '#'.$page->author_id : '') %></td>
+    <td><%= ($page->status ? 'opened' : 'close') %></td>
+    <td><%= dt $page->create_at %></td>
+    <td><%= $page->text %></td>
+  </tr>
+<% } %>
+</table>
+
+%= paginator 'admin_page_comments', int stash('page'), $comment_count, $limit

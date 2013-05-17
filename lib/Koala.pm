@@ -43,6 +43,7 @@ sub startup {
   $r->get(':url/:id')->to('page#show', namespace => 'Koala::Controller')->name('page_show');
   # Page for Admins
   my $p = $admin->route('page')->to('page#', namespace => 'Koala::Controller::Admin');
+    $p->get ('comments/:page')->to('#comments', page => 1)->name('admin_page_comments');
     $p->get ('list/:page')->to('#list', page => 1)->name('admin_page_list');
     $p->get ('new') ->to(template => 'page/admin/form')->name('admin_page_create_form');
     $p->post('new') ->to('#create')->name('admin_page_create');
