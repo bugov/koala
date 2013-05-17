@@ -18,8 +18,8 @@ sub show {
 sub comment {
   my $self = shift;
   my $page = eval { Koala::Model::Page->new(id => int $self->param('id'))->load }
-    or return $self->render_json({error => 1});
-  return $self->render_json({error => 1}) unless $page->is_opened();
+    or return $self->render(json => {error => 1});
+  return $self->render(json => {error => 1}) unless $page->is_opened();
   
   my %data = (
     author_id => $self->user->id,
@@ -32,7 +32,7 @@ sub comment {
   );
   Koala::Model::Comment->new(%data)->save;
   
-  $self->render_json({error => 0, comment => \%data});
+  $self->render(json => {error => 0, comment => \%data});
 }
 
 # Load more comments
@@ -43,7 +43,7 @@ sub load {
   my $comment_list = Koala::Model::Comment::Manager->get_comments(
     where => [page_id => $id], sort_by => '-id', limit => $size, offset => $offset);
   $comment_list->[$_] = $comment_list->[$_]->to_h for 0 .. $#$comment_list;
-  $self->render_json({error => 0, comments => $comment_list});
+  $self->render(json => {error => 0, comments => $comment_list});
 }
 
 1;
