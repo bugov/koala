@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Komodo Project File - DO NOT EDIT -->
 <project id="31922bb7-3e07-42fa-8fca-6cf1684e241c" kpf_version="5" name="Koala.komodoproject">
+<preference-set idref="31922bb7-3e07-42fa-8fca-6cf1684e241c" id="project" preftype="project">
+  <boolean id="dedentOnColon">0</boolean>
+  <string id="editAutoIndentStyle">smart</string>
+  <boolean id="editBackspaceDedents">1</boolean>
+  <boolean id="editElectricBrace">1</boolean>
+  <string relative="path" id="import_dirname"></string>
+  <string id="import_exclude_matches">*.*~;*.bak;*.tmp;CVS;.#*;*.pyo;*.pyc;.svn;.git;.hg;.bzr;*%25*;tmp*.html;.DS_Store;*.swp;*.kpf;*.komodoproject;.komodotools;__pycache__</string>
+  <string id="import_include_matches"></string>
+  <boolean id="indentStringsAfterParens">0</boolean>
+  <long id="indentWidth">2</long>
+  <string id="perlDefaultInterpreter"></string>
+  <string relative="path" id="perlExtraPaths">lib</string>
+  <boolean id="showIndentationGuides">1</boolean>
+  <long id="tabWidth">8</long>
+  <boolean id="useSmartTabs">1</boolean>
+  <boolean id="useTabs">0</boolean>
+  <string id="userEnvironmentStartupOverride"></string>
+</preference-set>
 </project>

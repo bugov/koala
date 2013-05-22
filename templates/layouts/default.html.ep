@@ -5,16 +5,20 @@
     <title><%= title %></title>
     %= stylesheet '/css/bootstrap.min.css'
     %= stylesheet '/css/bootstrap-responsive.min.css'
+    %= stylesheet '/css/bootstrap-datetimepicker.min.css'
     %= stylesheet '/css/style.css'
     %= javascript '/js/html5.js'
     %= javascript '/js/jquery.min.js'
     %= javascript '/js/bootstrap.min.js'
+    %= javascript '/js/bootstrap-datetimepicker.min.js'
+    %= javascript '/ckeditor/ckeditor.js'
+    %= javascript '/ckeditor/config.js'
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="/"><img src="/pic/logo.png"> Koala</a>
+          <a class="brand" href="/"><img src="/img/logo.png"> Koala</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li>
@@ -47,4 +51,24 @@
       %= content
     </div>
   </body>
+  <script>
+    $(document).ready(function() {
+      $(".datepicker").datetimepicker({language: 'ru-RU'});
+      
+      // Init ckeditor for all forms.
+      $("textarea").each(function () {
+        if ($(this).attr('id') == undefined || $(this).attr('id') == '') {
+          $(this).attr('id', 'textarea-' + Math.round(Math.random() * 1000000000));
+        }
+        try {
+          CKEDITOR.replace($(this).attr('id'), {
+            filebrowserUploadUrl: '/file/upload',
+            filebrowserImageUploadUrl: '/file/upload?type=image',
+          });
+        } catch (e) {
+          console.log('Can`t init ckeditor');
+        }
+      });
+    });
+  </script>
 </html>

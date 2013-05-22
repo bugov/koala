@@ -6,9 +6,11 @@ sub login {
   my $self = shift;
   my $user = Koala::Model::User->new(username => $self->param('username'))->load;
   if ($user->test_password($self->param('password'))) {
-    return $self->session($user->get_session_data())->redirect_to('user_home')
+    return $self->flash({message => 'Successful login', type => 'success'})
+      ->session($user->get_session_data())->redirect_to('user_home')
   }
-  $self->redirect_to('user_login_form');
+  $self->flash({message => 'Incorrect name or password', type => 'fail'})
+    ->redirect_to('user_login_form');
 }
 
 sub reg {
@@ -20,7 +22,8 @@ sub reg {
   );
   $user->new_password($self->param('password'));
   $user->save();
-  $self->redirect_to('user_login_form');
+  $self->flash({message => 'You can enter to you profile', type => 'success'})
+    ->redirect_to('user_login_form');
 }
 
 sub home {
@@ -32,7 +35,9 @@ sub home {
 
 sub logout {
   my $self = shift;
-  $self->session(id => 0)->redirect_to('user_login_form');
+  $self->session(id => 0)
+    ->flash({message => 'Exit successful', type => 'success'})
+    ->redirect_to('user_login_form');
 }
 
 1;

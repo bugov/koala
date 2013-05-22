@@ -36,7 +36,7 @@
     </div>
   </div>
   
-  <div href="<%= url_for 'page_comment_load' %>" class="btn wide aligncenter" id="comment-form-loadmore">Load more</div>
+  <div href="<%= url_for 'page_comment_load', id => $page->id %>" class="btn wide aligncenter" id="comment-form-loadmore">Load more</div>
   
   <script>
     var count = <%= $comment_count %>;

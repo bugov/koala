@@ -1,5 +1,6 @@
 % layout 'front';
 % title $page->title;
+% use Mojo::ByteStream 'b';
 
 % content_for keywords => begin
 %= $page->keywords;
@@ -11,9 +12,9 @@
 <article>
   <h1><%= $page->title %></h1>
   <p class="bold">
-    %= $page->legend
+    %=b $page->legend
   </p>
-  %= $page->text
+  %=b $page->text
 </article>
 
 %= include 'page/comment';

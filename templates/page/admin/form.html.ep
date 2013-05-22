@@ -3,7 +3,7 @@
 % $page = undef unless defined $page;
 % title ( $page ? 'Edit page' : 'Create new page' );
 
-<form action="<%= ($page ? url_for('admin_page_edit', id => $page->id) : url_for('admin_page_create')) %>" method="post">
+<form action="<%= ($page ? url_for('admin_page_edit', id => $page->id) : url_for('admin_page_create')) %>" method="post" enctype="multipart/form-data">
 <table class="table edit-table">
   <tr>
     <td><label class="span2">Title</label></td>
@@ -20,6 +20,15 @@
   <tr>
     <td><label class="span2">Text</label></td>
     <td><textarea class="span10" name="text" placeholder="Text"><%= $page ? $page->text : '' %></textarea></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Picture</label></td>
+    <td>
+      <% if ($page && $page->picture) { %>
+        <img src="/upload/<%= $page->picture->path %>">
+      <% } %>
+      <input type="file" class="span10" name="picture" placeholder="Picture">
+    </td>
   </tr>
   <tr>
     <td><label class="span2">Keywords</label></td>

@@ -2,20 +2,9 @@ package Koala::Controller::Admin::Page;
 use Mojo::Base 'Mojolicious::Controller';
 use Koala::Model::Page;
 use Koala::Model::Comment;
+use Koala::Entity::File;
 
 my $size = 20;
-
-sub approve {
-  
-}
-
-sub comments {
-  my $self = shift;
-  my $offset = $size * ($self->param('page') - 1);
-  my $comment_list = Koala::Model::Comment::Manager->get_comments(sort_by => '-id', limit => $size, offset => $offset);
-  my $comment_count = Koala::Model::Comment::Manager->get_comments_count;
-  $self->render('page/admin/comments', comment_list => $comment_list, comment_count => $comment_count, limit => $size);
-}
 
 sub list {
   my $self = shift;
@@ -27,19 +16,27 @@ sub list {
 
 sub show {
   my $self = shift;
-  my $page = Koala::Model::Page->new(id => int $self->param('id'))->load();
+  my $page = Koala::Model::Page->new(id => int $self->param('id'))->load;
   $self->render('page/admin/form', page => $page);
 }
 
 sub edit {
   my $self = shift;
-  my $page = Koala::Model::Page->new(id => int $self->param('id'))->load();
+  my $page = Koala::Model::Page->new(id => int $self->param('id'))->load;
+  
   $page->$_($self->param($_)) for qw/url title legend status
     keywords description text author_id approver_id owner_id/;
   $page->create_at($self->dt($self->param('create_at')));
   $page->modify_at($self->dt($self->param('modify_at')));
+  
+  my $file = Koala::Entity::File->new->init($self->param('picture'));
+  $file->author_id($self->user->id);
+  $file->save;
+  $page->picture_id($file->id);
   $page->save;
-  $self->redirect_to('admin_page_show', id => $page->id);
+  
+  $self->flash({message => 'Page edited', type => 'success'})
+    ->redirect_to('admin_page_show', id => $page->id);
 }
 
 sub create {
@@ -50,7 +47,8 @@ sub create {
   $page->create_at($self->dt($self->param('create_at')));
   $page->modify_at($self->dt($self->param('modify_at')));
   $page->save;
-  $self->redirect_to('admin_page_show', id => $page->id);
+  $self->flash({message => 'Page created', type => 'success'})
+    ->redirect_to('admin_page_show', id => $page->id);
 }
 
 1;

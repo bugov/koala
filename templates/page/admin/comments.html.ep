@@ -11,7 +11,7 @@
     <th>Text</th>
   </tr>
 <% for my $page (@$comment_list) { %>
-  <tr>
+  <tr onclick="window.location='<%= url_for 'admin_comment_show', id => $page->id %>'">
     <td><%= $page->id %></td>
     <td><%= $page->page->title %></td>
     <td><%= $page->username %> <%= ($page->author_id ? '#'.$page->author_id : '') %></td>

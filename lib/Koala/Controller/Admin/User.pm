@@ -28,7 +28,8 @@ sub edit {
   $user->create_at( $self->dt($self->param('create_at')) );
   $user->new_password($self->param('password')) if $self->param('password');
   $user->save();
-  $self->redirect_to('admin_user_show');
+  $self->flash({message => 'Profile edited', type => 'success'})
+    ->redirect_to('admin_user_show');
 }
 
 1;

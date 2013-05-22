@@ -37,18 +37,25 @@ sub startup {
     $u->get (':id')->to('#show')->name('admin_user_show');
     $u->post(':id')->to('#edit')->name('admin_user_edit');
   
-  # Page
-  $r->post('page/:id/comment')->to('page#comment', namespace => 'Koala::Controller')->name('page_comment');
-  $r->get('page/:id/comment/load')->to('page#load', namespace => 'Koala::Controller')->name('page_comment_load');
-  $r->get(':url/:id')->to('page#show', namespace => 'Koala::Controller')->name('page_show');
-  # Page for Admins
+  # Page & comments
+  $r->post('page/:id/comment')->to('comment#create', namespace => 'Koala::Controller')->name('page_comment');
+  $r->get('page/:id/comment/load')->to('comment#load', namespace => 'Koala::Controller')->name('page_comment_load');
+  # Page & comments for Admins
   my $p = $admin->route('page')->to('page#', namespace => 'Koala::Controller::Admin');
-    $p->get ('comments/:page')->to('#comments', page => 1)->name('admin_page_comments');
+    $p->get ('comments/:page')->to('comment#list', page => 1)->name('admin_page_comments');
     $p->get ('list/:page')->to('#list', page => 1)->name('admin_page_list');
     $p->get ('new') ->to(template => 'page/admin/form')->name('admin_page_create_form');
     $p->post('new') ->to('#create')->name('admin_page_create');
     $p->get (':id') ->to('#show')->name('admin_page_show');
     $p->post(':id') ->to('#edit')->name('admin_page_edit');
+    $p->get ('comment/:id')->to('comment#show')->name('admin_comment_show');
+  
+  # File
+  my $f = $r->route('file')->to('file#', namespace => 'Koala::Controller');
+    $f->post('upload')->to('#upload')->name('file_upload');
+    
+  # Show Page
+  $r->get('*url')->to('page#show', namespace => 'Koala::Controller')->name('page_show');
   
 }
 
@@ -69,21 +76,17 @@ sub addHelpers {
   $self->helper('dt' => sub {
     # Format datetime
     my ($self, $time) = @_;
-    my $tz = +6; # time zone
     
     if (!defined $time) {
       my $dt = DateTime->now();
-      $dt->add(hours => $tz);
       return DateTime::Format::MySQL->format_datetime($dt);
     }
     elsif ($time =~ /^\d+$/) {
       my $dt = DateTime->from_epoch(epoch => $time);
-      $dt->add(hours => $tz);
       return DateTime::Format::MySQL->format_datetime($dt);
     }
     elsif ($time =~ /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/) {
       my $dt = DateTime::Format::MySQL->parse_datetime($time);
-      $dt->add(hours => $tz);
       return $dt->epoch();
     }
   });
@@ -150,6 +153,22 @@ sub addHelpers {
     $html .= sprintf '<a href="%s">&raquo;</a>', $self->url_for($url_name, page => $last) if $cur != $last;
     
     Mojo::ByteStream->new("<div class=\"paginator\">$html</div>");
+  });
+  
+  $self->helper('error_json' => sub {
+    my $self = shift;
+    my %data = (code => 500, @_);
+    return $self->render(json => \%data);
+  });
+  
+  $self->helper('not_found' => sub {
+    my $self = shift;
+    return $self->render(template => 'not_found', code => 404);
+  });
+  
+  $self->helper('not_found_json' => sub {
+    my $self = shift;
+    return $self->render(json => {error => 404, code => 404, 'message' => 'Page not found'});
   });
 }
 

@@ -8,7 +8,7 @@ __PACKAGE__->meta->setup(
     url         => { type => 'varchar', length => 64 },
     title       => { type => 'varchar', not_null => 1, length => 64 },
     legend      => { type => 'varchar', not_null => 1, length => 255 },
-    picture     => { type => 'varchar', length => 64 },
+    picture_id  => { type => 'varchar', length => 64 },
     status      => { type => 'integer' },
     create_at   => { type => 'integer', not_null => 1 },
     modify_at   => { type => 'integer', not_null => 1 },
@@ -35,6 +35,10 @@ __PACKAGE__->meta->setup(
     owner => {
       class => 'Koala::Model::User',
       key_columns => { owner_id => 'id'},
+    },
+    picture => {
+      class => 'Koala::Model::File',
+      key_columns => { picture_id => 'id'},
     },
   ],
 );
