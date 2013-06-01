@@ -1,0 +1,6 @@
+<ul class="nav nav-list">
+  <li class="nav-header">Categories</li>
+  % for my $c (@$list) {
+  <li><a href="/<%= $c->url %>"><%= $c->title %></a></li>
+  % }
+</ul>

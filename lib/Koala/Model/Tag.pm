@@ -1,8 +1,8 @@
-package Koala::Model::Category;
+package Koala::Model::Tag;
 use base 'Koala::Model::Base';
 
 __PACKAGE__->meta->setup(
-  table => 'category',
+  table => 'tag',
   columns => [
     id          => { type => 'serial' , not_null => 1 },
     url         => { type => 'varchar', not_null => 1, length => 64 },
@@ -14,13 +14,22 @@ __PACKAGE__->meta->setup(
   unique_key => 'title',
 );
 
-# Manager for Category Model
-package Koala::Model::Category::Manager;
+__PACKAGE__->meta->add_relationship(
+  pages => {
+    type      => 'many to many',
+    map_class => 'Koala::Model::PageToTag',
+  },
+);
+
+__PACKAGE__->meta->initialize;
+
+# Manager for Tag Model
+package Koala::Model::Tag::Manager;
 use base 'Rose::DB::Object::Manager';
 
-sub object_class { 'Koala::Model::Category' }
+sub object_class { 'Koala::Model::Tag' }
 
-__PACKAGE__->make_manager_methods( 'categories' );
+__PACKAGE__->make_manager_methods( 'tags' );
 
 1;
 
@@ -32,13 +41,13 @@ __END__
 
 =head2 MySQL
 
-  CREATE TABLE IF NOT EXISTS `category` (
+  CREATE TABLE IF NOT EXISTS `tag` (
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
     `url` varchar(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     `title` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
     `legend` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `url` (`url`,`title`)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 =cut

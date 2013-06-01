@@ -10,6 +10,10 @@
     <td><input class="span10" name="title" type="text" placeholder="Title" value="<%= $page ? $page->title : '' %>"></td>
   </tr>
   <tr>
+    <td><label class="span2">Category</label></td>
+    <td><%= category_list ($page ? $page->category_id : 0) %></td>
+  </tr>
+  <tr>
     <td><label class="span2">Url</label></td>
     <td><input class="span10" name="url" type="text" placeholder="Url"  value="<%= $page ? $page->url : '' %>"></td>
   </tr>
@@ -19,15 +23,15 @@
   </tr>
   <tr>
     <td><label class="span2">Text</label></td>
-    <td><textarea class="span10" name="text" placeholder="Text"><%= $page ? $page->text : '' %></textarea></td>
+    <td><textarea class="span10 editor" name="text" placeholder="Text"><%= $page ? $page->text : '' %></textarea></td>
   </tr>
   <tr>
     <td><label class="span2">Picture</label></td>
     <td>
       <% if ($page && $page->picture) { %>
-        <img src="/upload/<%= $page->picture->path %>">
+        <div><img src="/upload/<%= $page->picture->path %>"></div>
       <% } %>
-      <input type="file" class="span10" name="picture" placeholder="Picture">
+      <input type="file" name="picture" placeholder="Picture">
     </td>
   </tr>
   <tr>
@@ -56,11 +60,21 @@
   </tr>
   <tr>
     <td><label class="span2">Create date</label></td>
-    <td><input class="span10" name="create_at" type="text" placeholder="Create date"  value="<%= dt($page ? $page->create_at : undef) %>"></td>
+    <td>
+        <div class="datepicker input-append date">
+            <input name="create_at" data-format="yyyy-MM-dd hh:mm:ss" type="datetime" placeholder="Create date"  value="<%= dt($page ? $page->create_at : undef) %>">
+            <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+        </div>
+    </td>
   </tr>
   <tr>
     <td><label class="span2">Modify date</label></td>
-    <td><input class="span10" name="modify_at" type="text" placeholder="Modify date"  value="<%= dt() %>"></td>
+    <td>
+        <div class="datepicker input-append date">
+            <input name="modify_at" data-format="yyyy-MM-dd hh:mm:ss" type="datetime" placeholder="Modify date"  value="<%= dt() %>">
+            <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+        </div>
+    </td>
   </tr>
   <tr>
     <td colspan=2 style="text-align: center">
@@ -73,3 +87,9 @@
   </tr>
 </table>
 </form>
+
+<script>
+  $('input[name="title"]').keyup(function() {
+    $('input[name="url"]').val( translit( $(this).val() ) );
+  });
+</script>

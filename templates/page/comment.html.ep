@@ -1,5 +1,5 @@
 % if ($page->is_opened) {
-<div class="span10">
+<div class="span7">
   <div class="head3" style="margin-left: 10px">Comments (<%= $comment_count %>)</div>
   <form action="<%= url_for 'page_comment', id => $page->id %>" method="post" id="comment-form">
     <div class="result">

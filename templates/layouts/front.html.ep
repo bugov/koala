@@ -14,7 +14,12 @@
   </head>
   <body>
     <div class="container">
-      %= content
+      <div id="content" class="span8">
+        <%= content %>
+      </div>
+      <div id="sidebar" class="span3">
+        <%= category_links() %>
+      </div>
     </div>
   </body>
 </html>

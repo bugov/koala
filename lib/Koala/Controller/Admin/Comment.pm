@@ -1,9 +1,17 @@
+# Class: Koala::Controller::Admin::Comment
+#   Admin panel for comments.
+# Extends: Mojolicious::Controller
 package Koala::Controller::Admin::Comment;
 use Mojo::Base 'Mojolicious::Controller';
 use Koala::Model::Comment;
 
+# Var: size - list size
 my $size = 20;
 
+# Method: list
+#   Show comment list splitted by pages.
+# Parameters:
+#   page - Int - page number.
 sub list {
   my $self = shift;
   my $offset = $size * ($self->param('page') - 1);
@@ -12,6 +20,10 @@ sub list {
   $self->render('page/admin/comments', comment_list => $comment_list, comment_count => $comment_count, limit => $size);
 }
 
+# Method: show
+#   Show one comment (form for edit).
+# Parameters:
+#   id - Int - comment id
 sub show {
   my $self = shift;
   my $id = $self->param('id');
@@ -20,3 +32,15 @@ sub show {
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 Copyright and license
+
+Copyright (C) 2013, Georgy Bazhukov <georgy.bazhukov@gmail.com> aka bugov <gosha@bugov.net>.
+This program is free software, you can redistribute it and/or modify it under
+the terms of the Artistic License version 2.0.
+
+=cut

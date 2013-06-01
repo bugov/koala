@@ -1,0 +1,33 @@
+#! /usr/bin/perl
+
+use strict;
+use warnings;
+use feature ':5.10';
+
+my $src = shift; # Source directory.
+my $dst = shift; # Path to result file.
+
+chop $src if $src =~ /\/$/;
+die "Can't find $src" unless -d $src;
+
+local $/;
+my @pool = <$src/*>;
+open DST, '>', $dst if $dst;
+
+while (my $file = shift @pool) {
+  push @pool, <$file/*> && next if -d $file;
+  open SRC, $file or next;
+  
+  my ($sql) = (<SRC> =~ /
+    (?:^|\n)    # Start of text or newline.
+      =head1\s+database\s+structure .*?
+      =head2\s+mysql\n (.*?)
+    (?:$|\n=)   # End of text or next 'tag'.
+    /six);
+  
+  print $sql      if $sql && !$dst;
+  print DST $sql  if $sql &&  $dst;
+  close SRC;
+}
+
+close DST if $dst;

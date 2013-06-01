@@ -31,3 +31,25 @@ sub object_class { 'Koala::Model::File' }
 __PACKAGE__->make_manager_methods( 'files' );
 
 1;
+
+__END__
+
+=pod
+
+=head1 DATABASE STRUCTURE
+
+=head2 MySQL
+
+  CREATE TABLE IF NOT EXISTS `file` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `author_id` int(11) unsigned NOT NULL,
+    `create_at` int(11) unsigned NOT NULL,
+    `title` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+    `path` varchar(64) CHARACTER SET ascii COLLATE ascii_bin DEFAULT NULL,
+    `size` int(11) unsigned DEFAULT NULL,
+    `mime_type` varchar(16) CHARACTER SET ascii COLLATE ascii_bin DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `path` (`path`)
+  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+=cut

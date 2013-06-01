@@ -4,8 +4,8 @@ use Koala::Model::User;
 
 sub login {
   my $self = shift;
-  my $user = Koala::Model::User->new(username => $self->param('username'))->load;
-  if ($user->test_password($self->param('password'))) {
+  my $user = eval { Koala::Model::User->new(username => $self->param('username'))->load };
+  if ($user && $user->test_password($self->param('password'))) {
     return $self->flash({message => 'Successful login', type => 'success'})
       ->session($user->get_session_data())->redirect_to('user_home')
   }

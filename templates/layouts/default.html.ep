@@ -13,6 +13,7 @@
     %= javascript '/js/bootstrap-datetimepicker.min.js'
     %= javascript '/ckeditor/ckeditor.js'
     %= javascript '/ckeditor/config.js'
+    %= javascript '/js/script.js'
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -22,17 +23,16 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li>
-                <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)"><%= 'Pages' %></a>
-                <ul class="dropdown-menu">
-                  <li><a href="<%= url_for 'admin_page_list' %>"><%= 'List' %></a></li>
-                  <li><a href="<%= url_for 'admin_page_create' %>"><%= 'Create new' %></a></li>
-                </ul>
+                <a href="<%= url_for 'admin_page_list', page => 1 %>"><%= 'Pages' %></a>
               </li>
               <li>
-                <a href="<%= url_for 'admin_user_list' %>"><%= 'Users' %></a>
+                <a href="<%= url_for 'admin_category_list', page => 1 %>"><%= 'Categories' %></a>
               </li>
               <li>
-                <a href="<%= url_for 'admin_page_comments' %>"><%= 'Comments' %></a>
+                <a href="<%= url_for 'admin_user_list', page => 1 %>"><%= 'Users' %></a>
+              </li>
+              <li>
+                <a href="<%= url_for 'admin_page_comments', page => 1 %>"><%= 'Comments' %></a>
               </li>
             </ul>
           </div>
@@ -56,7 +56,7 @@
       $(".datepicker").datetimepicker({language: 'ru-RU'});
       
       // Init ckeditor for all forms.
-      $("textarea").each(function () {
+      $(".editor").each(function () {
         if ($(this).attr('id') == undefined || $(this).attr('id') == '') {
           $(this).attr('id', 'textarea-' + Math.round(Math.random() * 1000000000));
         }

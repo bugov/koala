@@ -56,3 +56,5 @@ body .navbar .navbar-inner .brand img {
 .head3 { font-size: 18px; margin: 5px 0px; }
 .hide { display: none; }
 .comment { border-bottom: 1px solid #ccc; margin-bottom: 10px; }
+
+.btn-new { margin-top: -46px; }

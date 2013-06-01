@@ -32,7 +32,9 @@ __END__
 
 =pod
 
-=head1 Database structure
+=head1 DATABASE STRUCTURE
+
+=head2 MySQL
 
   CREATE TABLE IF NOT EXISTS `user` (
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

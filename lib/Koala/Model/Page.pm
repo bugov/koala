@@ -7,6 +7,7 @@ __PACKAGE__->meta->setup(
     id          => { type => 'serial' , not_null => 1 },
     url         => { type => 'varchar', length => 64 },
     title       => { type => 'varchar', not_null => 1, length => 64 },
+    category_id => { type => 'integer' },
     legend      => { type => 'varchar', not_null => 1, length => 255 },
     picture_id  => { type => 'varchar', length => 64 },
     status      => { type => 'integer' },
@@ -40,13 +41,23 @@ __PACKAGE__->meta->setup(
       class => 'Koala::Model::File',
       key_columns => { picture_id => 'id'},
     },
+    category => {
+      class => 'Koala::Model::Category',
+      key_columns => { category_id => 'id'},
+    },
   ],
+);
+
+__PACKAGE__->meta->add_relationship(
+  tags => {
+    type      => 'many to many',
+    map_class => 'Koala::Model::PageToTag',
+  },
 );
 
 
 # Var: possible_status
 #   Enum for statuses
-
 our %possible_status = (
   'deleted' => 0,
   'new'     => 10,
@@ -65,15 +76,15 @@ sub is_opened {
 # Method: set_status
 #   set status by name
 # Parameter: status - Str
-
+# Return: status
 sub set_status {
   my ($self, $status) = @_;
   die "Undefined status $status" unless exists $possible_status{$status};
   $self->status($status);
 }
 
-# Manager for User Model
 
+# Manager for User Model
 package Koala::Model::Page::Manager;
 use base 'Rose::DB::Object::Manager';
 
@@ -87,14 +98,17 @@ __END__
 
 =pod
 
-=head1 Database structure
+=head1 DATABASE STRUCTURE
+
+=head2 MySQL
 
   CREATE TABLE IF NOT EXISTS `page` (
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
     `url` varchar(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     `title` varchar(64) NOT NULL,
+    `category_id` int(11) unsigned DEFAULT NULL,
     `legend` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-    `picture` varchar(64) CHARACTER SET ascii COLLATE ascii_bin DEFAULT NULL,
+    `picture_id` int(11) DEFAULT NULL,
     `status` int(10) unsigned NOT NULL,
     `create_at` int(11) unsigned DEFAULT NULL,
     `modify_at` int(11) unsigned DEFAULT NULL,

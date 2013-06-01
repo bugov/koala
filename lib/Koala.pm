@@ -1,10 +1,11 @@
 package Koala;
 use Mojo::Base 'Mojolicious';
-use Koala::Entity::User;
 use DateTime;
 use DateTime::Format::MySQL;
 use Mojo::ByteStream;
+use Koala::Entity::User;
 use Koala::Model::User;
+use Koala::Model::Category;
 
 # This method will run once at server start
 sub startup {
@@ -49,6 +50,13 @@ sub startup {
     $p->get (':id') ->to('#show')->name('admin_page_show');
     $p->post(':id') ->to('#edit')->name('admin_page_edit');
     $p->get ('comment/:id')->to('comment#show')->name('admin_comment_show');
+  # Category for Admins
+  my $c = $admin->route('category')->to('category#', namespace => 'Koala::Controller::Admin');
+    $c->get ('list/:page')->to('#list', page => 1)->name('admin_category_list');
+    $c->get ('new') ->to(template => 'category/admin/form')->name('admin_category_create_form');
+    $c->post('new') ->to('#create')->name('admin_category_create');
+    $c->get (':id') ->to('#show')->name('admin_category_show');
+    $c->post(':id') ->to('#edit')->name('admin_category_edit');
   
   # File
   my $f = $r->route('file')->to('file#', namespace => 'Koala::Controller');
@@ -105,8 +113,18 @@ sub addHelpers {
   $self->helper('role_list' => sub {
     my ($self, $default) = @_;
     return Mojo::ByteStream->new(
-      $self->render('user/helper/role_list', partial => 1, role_list => $self->user->roles, default => int $default)
+      $self->render('user/helper/role_list', partial => 1,
+        role_list => $self->user->roles, default => int $default)
     )
+  });
+  
+  $self->helper('category_list' => sub {
+    my ($self, $default) = @_;
+    my $category_list = Koala::Model::Category::Manager->get_categories();
+    return Mojo::ByteStream->new(
+      $self->render('category/helper/category_list', partial => 1,
+        list => $category_list, default => int $default)
+    );
   });
   
   $self->helper('status_list' => sub {
@@ -116,7 +134,15 @@ sub addHelpers {
     return Mojo::ByteStream->new(
       $self->render('page/helper/status_list', partial => 1,
         status_list => $list, default => int $default)
-    )
+    );
+  });
+  
+  $self->helper('category_links' => sub {
+    my ($self, $category_id) = @_;
+    my $list =  Koala::Model::Category::Manager->get_categories();
+    return Mojo::ByteStream->new(
+      $self->render('category/helper/category_links', partial => 1, list => $list)
+    );
   });
   
   $self->helper('paginator' => sub {
