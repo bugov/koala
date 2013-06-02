@@ -13,7 +13,6 @@ __PACKAGE__->meta->setup(
     mime_type   => { type => 'varchar', length => 16 },
   ],
   pk_columns => 'id',
-  
   foreign_keys => [
     author => {
       class => 'Koala::Model::User',

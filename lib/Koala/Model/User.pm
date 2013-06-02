@@ -18,7 +18,6 @@ __PACKAGE__->meta->setup(
 );
 
 # Manager for User Model
-
 package Koala::Model::User::Manager;
 use base 'Rose::DB::Object::Manager';
 

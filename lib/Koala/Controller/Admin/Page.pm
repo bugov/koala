@@ -2,6 +2,7 @@ package Koala::Controller::Admin::Page;
 use Mojo::Base 'Mojolicious::Controller';
 use Koala::Model::Page;
 use Koala::Model::Comment;
+use Koala::Model::Tag;
 use Koala::Entity::File;
 
 my $size = 20;
@@ -21,7 +22,8 @@ sub list {
 sub show {
   my $self = shift;
   my $page = Koala::Model::Page->new(id => int $self->param('id'))->load;
-  $self->render('page/admin/form', page => $page);
+  $self->render('page/admin/form', page => $page,
+    tag_list => Koala::Model::Tag::Manager->get_tags);
 }
 
 # Method: edit
@@ -42,6 +44,7 @@ sub edit {
     $page->picture_id($file->id); 
   }
   
+  $page->setTags(title => split /, /, $self->param('tags'));
   $page->save;
   
   $self->flash({message => 'Page edited', type => 'success'})
@@ -57,6 +60,7 @@ sub create {
     keywords description text author_id approver_id owner_id/;
   $page->create_at($self->dt($self->param('create_at')));
   $page->modify_at($self->dt($self->param('modify_at')));
+  $page->setTags(title => split /, /, $self->param('tags'));
   $page->save;
   $self->flash({message => 'Page created', type => 'success'})
     ->redirect_to('admin_page_show', id => $page->id);

@@ -37,11 +37,13 @@
   <tr>
     <td><label class="span2">Tags</label></td>
     <td>
-      <textarea class="span10" name="tags" placeholder="Tags" disabled="disabled">
-        % if ($page) {
-        %= join ',', map {$_->title} $page->tags;
-        % }
-      </textarea>
+      % for my $tag (@$tag_list) {
+      <a href="javascript: void(0)" class="btn btn-small add-tag"><i class="icon-tag"></i>
+        <%= $tag->title %></a> 
+      % }
+      <textarea class="span10 hidden" name="tags" placeholder="Tags"><%=
+        $page ? join ', ', map {$_->title} $page->getTags : ''
+      %></textarea>
     </td>
   </tr>
   <tr>
@@ -102,4 +104,36 @@
   $('input[name="title"]').keyup(function() {
     $('input[name="url"]').val( translit( $(this).val() ) );
   });
+  
+  $('.add-tag').click(function() {
+    add_tag( $(this).text().trim() );
+  });
+  
+  function add_tag(name) {
+    var new_tag_list = {};
+    new_tag_list[name] = 1;
+    
+    var tag_list = $('textarea[name="tags"]').val().split(',');
+    for (i in tag_list)
+      if (new_tag_list[tag_list[i].trim()] == undefined)
+        new_tag_list[tag_list[i].trim()] = 1;
+      else
+        new_tag_list[tag_list[i].trim()]++;
+    
+    tag_list = [];
+    for (tag in new_tag_list)
+      if (tag.length > 0 && new_tag_list[tag] == 1)
+        tag_list.push(tag);
+    
+    $('textarea[name="tags"]').val(tag_list.join(', '));
+    
+    // Highlight tags
+    $('.add-tag').removeClass('btn-success');
+    $('.add-tag').each(function() {
+      if (tag_list.indexOf( $(this).text().trim() ) != -1) {
+        $(this).addClass('btn-success');
+      }
+    });
+  }
+  add_tag('');
 </script>

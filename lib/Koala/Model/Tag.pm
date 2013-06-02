@@ -12,16 +12,13 @@ __PACKAGE__->meta->setup(
   pk_columns => 'id',
   unique_key => 'url',
   unique_key => 'title',
+  relationships => [
+    pages => {
+      type      => 'many to many',
+      map_class => 'Koala::Model::PageToTag',
+    },
+  ],
 );
-
-__PACKAGE__->meta->add_relationship(
-  pages => {
-    type      => 'many to many',
-    map_class => 'Koala::Model::PageToTag',
-  },
-);
-
-#__PACKAGE__->meta->initialize;
 
 # Manager for Tag Model
 package Koala::Model::Tag::Manager;

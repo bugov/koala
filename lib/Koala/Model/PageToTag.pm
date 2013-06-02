@@ -1,26 +1,33 @@
 package Koala::Model::PageToTag;
-use base 'Rose::DB::Object';
+use base 'Koala::Model::Base';
 
-__PACKAGE__->meta->table('page_to_tag');
-__PACKAGE__->meta->columns(
-  id      => { type => 'int', primary_key => 1 },
-  page_id => { type => 'int' },
-  tag_id  => { type => 'int' },
+__PACKAGE__->meta->setup(
+  table => 'page_to_tag',
+  columns => [
+    id      => { type => 'int', primary_key => 1 },
+    page_id => { type => 'int' },
+    tag_id  => { type => 'int' },
+  ],
+  unique_key => ['page_id', 'tag_id'],
+  foreign_keys => [
+    page => {
+      class => 'Koala::Model::Page',
+      key_columns => { page_id => 'id' },
+    },
+    tag => {
+      class => 'Koala::Model::Tag',
+      key_columns => { tag_id => 'id' },
+    },
+  ],
 );
 
-__PACKAGE__->meta->foreign_keys(
-  page => {
-    class => 'Koala::Model::Page',
-    key_columns => { page_id => 'id' },
-  },
+# Manager for PageToTag Model
+package Koala::Model::PageToTag::Manager;
+use base 'Rose::DB::Object::Manager';
 
-  tag => {
-    class => 'Koala::Model::Tag',
-    key_columns => { tag_id => 'id' },
-  },  
-);
+sub object_class { 'Koala::Model::PageToTag' }
 
-__PACKAGE__->meta->initialize;
+__PACKAGE__->make_manager_methods( 'pages_to_tags' );
 
 1;
 
@@ -36,7 +43,8 @@ __END__
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
     `page_id` int(11) unsigned NOT NULL,
     `tag_id` int(11) unsigned NOT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_tag` (`page_id`,`tag_id`)
   ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 =cut

@@ -1,5 +1,7 @@
 package Koala::Model::Page;
 use base 'Koala::Model::Base';
+use Koala::Model::PageToTag;
+use Koala::Model::Tag;
 
 __PACKAGE__->meta->setup(
   table => 'page',
@@ -23,7 +25,6 @@ __PACKAGE__->meta->setup(
   pk_columns => 'id',
   unique_key => 'url',
   unique_key => 'title',
-  
   foreign_keys => [
     author => {
       class => 'Koala::Model::User',
@@ -46,13 +47,12 @@ __PACKAGE__->meta->setup(
       key_columns => { category_id => 'id'},
     },
   ],
-);
-
-__PACKAGE__->meta->add_relationship(
-  tags => {
-    type      => 'many to many',
-    map_class => 'Koala::Model::PageToTag',
-  },
+  relationships => [
+    tags => {
+      type      => 'many to many',
+      map_class => 'Koala::Model::PageToTag',
+    },
+  ],
 );
 
 
@@ -72,6 +72,51 @@ sub is_opened {
   return 0;
 }
 
+# Method: getTags
+#   get tag list
+# Return: ArrayRef
+sub getTags {
+  my $self = shift;
+  return eval { $self->tags } or [];
+}
+
+# Method: addTag
+#   add tag
+# Parameters:
+#   key - Str
+#   val - Str|Int
+sub addTag {
+  my $self = shift;
+  my $tag = Koala::Model::Tag->new(@_)->load;
+  eval { Koala::Model::PageToTag->new(page_id => $self->id, tag_id => $tag->id)->save };
+}
+
+# Method: setTags
+#   add and remove tags
+# Parameters:
+#   key - Str
+#   val - Array
+sub setTags {
+  my $self = shift;
+  my ($key, @vals) = @_;
+  
+  my @tags = map {$_->$key} @{ $self->getTags };
+  my @new = grep {not $_ ~~ @tags} @vals;
+  my @old = grep {not $_ ~~ @vals} @tags;
+  
+  # Delete old tags
+  for my $tag ($self->getTags) {
+    eval { Koala::Model::PageToTag::Manager->delete_pages_to_tags(
+      where => [page_id => $self->id, tag_id => $tag->id]
+    )} if $tag->$key ~~ @old;
+  }
+  
+  # Attach new tags
+  for my $val (@new) {
+    my $tag = eval { Koala::Model::Tag->new($key => $val)->load } or next;
+    eval { Koala::Model::PageToTag->new(page_id => $self->id, tag_id => $tag->id)->save }
+  }
+}
 
 # Method: set_status
 #   set status by name
