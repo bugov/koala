@@ -1,35 +1,12 @@
 # Class: Koala::Controller::Admin::Comment
 #   Admin panel for comments.
-# Extends: Mojolicious::Controller
+# Extends: Koala::Controller::Admin::Base
+
 package Koala::Controller::Admin::Comment;
-use Mojo::Base 'Mojolicious::Controller';
+use Mojo::Base 'Koala::Controller::Admin::Base';
 use Koala::Model::Comment;
 
-# Var: size - list size
-my $size = 20;
-
-# Method: list
-#   Show comment list splitted by pages.
-# Parameters:
-#   page - Int - page number.
-sub list {
-  my $self = shift;
-  my $offset = $size * ($self->param('page') - 1);
-  my $comment_list = Koala::Model::Comment::Manager->get_comments(sort_by => '-id', limit => $size, offset => $offset);
-  my $comment_count = Koala::Model::Comment::Manager->get_comments_count;
-  $self->render('page/admin/comments', comment_list => $comment_list, comment_count => $comment_count, limit => $size);
-}
-
-# Method: show
-#   Show one comment (form for edit).
-# Parameters:
-#   id - Int - comment id
-sub show {
-  my $self = shift;
-  my $id = $self->param('id');
-  my $comment = eval {Koala::Model::Comment->new(id => $id)->load} or return $self->not_found;
-  $self->render('comment/admin/show', comment => $comment);
-}
+has 'model_name' => 'comment';
 
 1;
 

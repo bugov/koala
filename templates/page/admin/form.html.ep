@@ -35,6 +35,16 @@
     </td>
   </tr>
   <tr>
+    <td><label class="span2">Tags</label></td>
+    <td>
+      <textarea class="span10" name="tags" placeholder="Tags" disabled="disabled">
+        % if ($page) {
+        %= join ',', map {$_->title} $page->tags;
+        % }
+      </textarea>
+    </td>
+  </tr>
+  <tr>
     <td><label class="span2">Keywords</label></td>
     <td><textarea class="span10" name="keywords" placeholder="Keywords"><%= $page ? $page->keywords : '' %></textarea></td>
   </tr>

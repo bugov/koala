@@ -21,7 +21,7 @@ __PACKAGE__->meta->add_relationship(
   },
 );
 
-__PACKAGE__->meta->initialize;
+#__PACKAGE__->meta->initialize;
 
 # Manager for Tag Model
 package Koala::Model::Tag::Manager;
@@ -44,7 +44,7 @@ __END__
   CREATE TABLE IF NOT EXISTS `tag` (
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
     `url` varchar(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-    `title` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+    `title` varchar(64) NOT NULL,
     `legend` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `url` (`url`,`title`)

@@ -29,6 +29,9 @@
                 <a href="<%= url_for 'admin_category_list', page => 1 %>"><%= 'Categories' %></a>
               </li>
               <li>
+                <a href="<%= url_for 'admin_tag_list', page => 1 %>"><%= 'Tags' %></a>
+              </li>
+              <li>
                 <a href="<%= url_for 'admin_user_list', page => 1 %>"><%= 'Users' %></a>
               </li>
               <li>

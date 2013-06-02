@@ -57,7 +57,13 @@ sub startup {
     $c->post('new') ->to('#create')->name('admin_category_create');
     $c->get (':id') ->to('#show')->name('admin_category_show');
     $c->post(':id') ->to('#edit')->name('admin_category_edit');
-  
+  # Tag for Admins
+  my $t = $admin->route('tag')->to('tag#', namespace => 'Koala::Controller::Admin');
+    $t->get ('list/:page')->to('#list', page => 1)->name('admin_tag_list');
+    $t->get ('new') ->to(template => 'tag/admin/form')->name('admin_tag_create_form');
+    $t->post('new') ->to('#create')->name('admin_tag_create');
+    $t->get (':id') ->to('#show')->name('admin_tag_show');
+    $t->post(':id') ->to('#edit')->name('admin_tag_edit');
   # File
   my $f = $r->route('file')->to('file#', namespace => 'Koala::Controller');
     $f->post('upload')->to('#upload')->name('file_upload');
