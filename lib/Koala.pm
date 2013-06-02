@@ -6,6 +6,7 @@ use Mojo::ByteStream;
 use Koala::Entity::User;
 use Koala::Model::User;
 use Koala::Model::Category;
+use Koala::Model::Tag;
 
 # This method will run once at server start
 sub startup {
@@ -17,6 +18,8 @@ sub startup {
 
   # Router
   my $r = $self->routes;
+    $r->route(':page', page => qr/\d*/)->to('page#list', page => 1, namespace => 'Koala::Controller');
+  
   # Access
   my $user  = $r->bridge('/user' )->to(cb => sub {shift->user->is_user () ? 1 : 0});
   my $staff = $r->bridge('/staff')->to(cb => sub {shift->user->is_staff() ? 1 : 0});
@@ -44,6 +47,7 @@ sub startup {
   # Page & comments for Admins
   my $p = $admin->route('page')->to('page#', namespace => 'Koala::Controller::Admin');
     $p->get ('comments/:page')->to('comment#list', page => 1)->name('admin_page_comments');
+    $p->post('comments/:id')->to('comment#edit')->name('admin_comment_edit');
     $p->get ('list/:page')->to('#list', page => 1)->name('admin_page_list');
     $p->get ('new') ->to(template => 'page/admin/form')->name('admin_page_create_form');
     $p->post('new') ->to('#create')->name('admin_page_create');
@@ -145,9 +149,17 @@ sub addHelpers {
   
   $self->helper('category_links' => sub {
     my ($self, $category_id) = @_;
-    my $list =  Koala::Model::Category::Manager->get_categories();
+    my $list = Koala::Model::Category::Manager->get_categories();
     return Mojo::ByteStream->new(
       $self->render('category/helper/category_links', partial => 1, list => $list)
+    );
+  });
+  
+  $self->helper('tag_links' => sub {
+    my ($self, $tag_id) = @_;
+    my $list = Koala::Model::Tag::Manager->get_tags();
+    return Mojo::ByteStream->new(
+      $self->render('tag/helper/tag_links', partial => 1, list => $list)
     );
   });
   

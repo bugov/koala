@@ -1,15 +1,18 @@
-% if ($page->is_opened) {
 <div class="span7">
   <div class="head3" style="margin-left: 10px">Comments (<%= $comment_count %>)</div>
-  <form action="<%= url_for 'page_comment', id => $page->id %>" method="post" id="comment-form">
-    <div class="result">
-      <div id="error-255" class="error hide">Can't add comment</div>
-    </div>
-    <div><input class="wide" name="title" placeholder="Title" type="text"></div>
-    <div><input class="wide" name="username" placeholder="Username" type="text" value="<%= user->username %>"></div>
-    <div><textarea class="wide" name="text" placeholder="Comment text"></textarea></div>
-    <div style="margin: 10px 0px 10px 10px;"><button class="btn" type="reset" id="comment-form-submit">Add comment</button></div>
-  </form>
+  
+  % if ($page->is_opened) {
+    <form action="<%= url_for 'page_comment', id => $page->id %>" method="post" id="comment-form">
+      <div class="result">
+        <div id="error-255" class="error hide">Can't add comment</div>
+      </div>
+      <div><input class="wide" name="title" placeholder="Title" type="text"></div>
+      <div><input class="wide" name="username" placeholder="Username" type="text" value="<%= user->username %>"></div>
+      <div><textarea class="wide" name="text" placeholder="Comment text"></textarea></div>
+      <div style="margin: 10px 0px 10px 10px;"><button class="btn" type="reset" id="comment-form-submit">Add comment</button></div>
+    </form>
+  % }
+
   <div id="comment-list">
     % for my $c (@$comment_list) {
     <div class="comment wide" id="comment-<%= $c->id %>">
@@ -36,7 +39,9 @@
     </div>
   </div>
   
+  % if ($comment_count > @$comment_list) {
   <div href="<%= url_for 'page_comment_load', id => $page->id %>" class="btn wide aligncenter" id="comment-form-loadmore">Load more</div>
+  % }
   
   <script>
     var count = <%= $comment_count %>;
@@ -92,4 +97,3 @@
     });
   </script>
 </div>
-% }

@@ -14,7 +14,6 @@ __PACKAGE__->meta->setup(
     text        => { type => 'text', default => '' },
   ],
   pk_columns => 'id',
-  
   foreign_keys => [
     author => {
       class => 'Koala::Model::User',

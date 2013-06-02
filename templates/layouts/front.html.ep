@@ -18,7 +18,10 @@
         <%= content %>
       </div>
       <div id="sidebar" class="span3">
+        <a href="/"><h1>Bugov's blog</h1></a>
+        <p>Another geek in the world</p>
         <%= category_links() %>
+        <%= tag_links() %>
       </div>
     </div>
   </body>

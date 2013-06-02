@@ -14,7 +14,7 @@ div.container a.brand {
 .aligncenter {margin: 0px auto}
 .admin .table tr:hover {background: #CDE2A3; cursor: pointer}
 .admin .table th {font-width: 600; text-align: left; cursor: default}
-.bold {font-weight: 600}
+.bold {font-weight: 800}
 .admin .table td label { text-align: right; padding-top: 5px; }
 body .navbar .navbar-inner {
   /* Gradient */
@@ -58,3 +58,6 @@ body .navbar .navbar-inner .brand img {
 .comment { border-bottom: 1px solid #ccc; margin-bottom: 10px; }
 
 .btn-new { margin-top: -46px; }
+
+h1 { font-size: 28px; font-weight: 400 }
+h2 { font-size: 20px; font-weight: 400 }
