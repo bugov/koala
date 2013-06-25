@@ -52,6 +52,23 @@
     UNIQUE KEY `url` (`url`)
   ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+  CREATE TABLE IF NOT EXISTS `page_to_tag` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `page_id` int(11) unsigned NOT NULL,
+    `tag_id` int(11) unsigned NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_tag` (`page_id`,`tag_id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+  CREATE TABLE IF NOT EXISTS `tag` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `url` varchar(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    `title` varchar(64) NOT NULL,
+    `legend` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `url` (`url`,`title`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
   CREATE TABLE IF NOT EXISTS `user` (
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
     `username` varchar(32) NOT NULL,
