@@ -32,7 +32,10 @@ sub load {
   my $offset = $self->param('offset');
   my $comment_list = Koala::Model::Comment::Manager->get_comments(
     where => [page_id => $id, status => {gt => 0}], sort_by => '-id', limit => $size, offset => $offset);
-  $comment_list->[$_] = $comment_list->[$_]->to_h for 0 .. $#$comment_list;
+  for my $c (0 .. $#$comment_list) {
+    $comment_list->[$c] = $comment_list->[$c]->to_h;
+    $comment_list->[$c]->{create_at} = $self->dt($comment_list->[$c]->{create_at});
+  }
   $self->render(json => {error => 0, comments => $comment_list});
 }
 
