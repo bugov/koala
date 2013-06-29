@@ -24,7 +24,8 @@ sub list {
 
 sub show {
   my $self = shift;
-  my $page = eval{Koala::Model::Page->new(url => $self->param('url'))->load} or return $self->list_by_category;
+  my $url = $self->remove_last_slash($self->param('url'));
+  my $page = eval{Koala::Model::Page->new(url => $url)->load} or return $self->list_by_category;
   my $comment_list = Koala::Model::Comment::Manager
     ->get_comments(where => [page_id => $page->id, status => {gt => 0}], sort_by => '-id', limit => $size);
   my $comment_count = Koala::Model::Comment::Manager
@@ -34,16 +35,25 @@ sub show {
 
 sub list_by_category {
   my $self = shift;
-  my $category = eval { Koala::Model::Category->new(url => $self->param('url'))->load } or return $self->list_by_tag;
+  my $url = $self->remove_last_slash($self->param('url'));
+  my $category = eval { Koala::Model::Category->new(url => $url)->load } or return $self->list_by_tag;
   my $list = Koala::Model::Page::Manager->get_pages(where => [category_id => $category->id], sort_by => '-id');
   $self->render('page/list_by_category', category => $category, list => $list);
 }
 
 sub list_by_tag {
   my $self = shift;
-  my $tag = eval { Koala::Model::Tag->new(url => $self->param('url'))->load } or return $self->not_found;
+  my $url = $self->remove_last_slash($self->param('url'));
+  my $tag = eval { Koala::Model::Tag->new(url => $url)->load } or return $self->not_found;
   my $list = $tag->pages;
   $self->render('page/list_by_tag', tag => $tag, list => $list);
+}
+
+sub remove_last_slash {
+  my $self = shift;
+  my $url = shift;
+  chop $url if $url =~ /\/$/;
+  return $url;
 }
 
 1;
