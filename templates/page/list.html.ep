@@ -1,11 +1,16 @@
 % layout 'front';
 % title 'Bugov\'s blog';
+% use Mojo::ByteStream 'b';
 
 % for my $item (@$list) {
 <div>
   <h2><%= $item->title %></h2>
   <p>
-    <%= $item->legend %>
+    % if ($item->legend) {
+      <%=b $item->legend %>
+    % } else {
+      <%=b $item->text %>
+    %}
   </p>
   <p>
     <a href="<%= $item->url %>">more</a>
