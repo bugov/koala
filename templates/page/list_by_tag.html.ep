@@ -4,7 +4,7 @@
 <h1>Tag "<%= $tag->title %>"</h1>
 <p><%= $tag->legend %></p>
 
-% for my $item (@$list) {
+% for my $item (reverse @$list) {
 <div>
   <h2><%= $item->title %></h2>
   <p>
