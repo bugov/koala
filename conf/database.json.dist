@@ -1,0 +1,9 @@
+{
+  "database": {
+    "driver"  : "MySQL",
+    "database": "db_name",
+    "host"    : "localhost",
+    "username": "username",
+    "password": "your strong password"
+  }
+}
