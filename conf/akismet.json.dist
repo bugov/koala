@@ -1,6 +1,6 @@
 {
   "akismet": {
-    "akismet_api": "api key",
-    "url": "website url"
+    "KEY": "api key",
+    "URL": "website url"
   }
 }

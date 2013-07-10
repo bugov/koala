@@ -8,6 +8,7 @@ use Koala::Model::User;
 use Koala::Model::Category;
 use Koala::Model::Tag;
 
+
 # This method will run once at server start
 sub startup {
   my $self = shift;
