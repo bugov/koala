@@ -1,6 +1,8 @@
 package Koala::Controller::Comment;
 use Mojo::Base 'Mojolicious::Controller';
+use Net::Akismet;
 use Koala::Model::Comment;
+use Koala::Entity::Config;
 
 my $size = 10;
 my $default_status = 0; # closed, opened = 0, 1
@@ -20,8 +22,22 @@ sub create {
     title     => $self->param('title'),
     username  => $self->param('username'),
   );
-  Koala::Model::Comment->new(%data)->save;
   
+  # Akismet
+  $config = Koala::Entity::Config->init->get_config->{akismet};
+  my $akismet = Net::Akismet->new(%$config) or die('Key verification failure!');
+  my $fail = $akismet->check (
+      USER_IP => $this->tx->remote_address,
+      COMMENT_USER_AGENT => $this->req->headers->user_agent,
+      COMMENT_CONTENT => $data{text},
+      COMMENT_AUTHOR => $data{username},
+      REFERRER => $this->req->headers->referrer,
+#      COMMENT_AUTHOR_EMAIL => $this->user->{mail},
+  ) or die('Is the Akismet server dead?');
+  return $self->render(json => {error => 401, comment => 'Seems like spam...'}) if 'true' eq $fail;
+  
+  # Save & render
+  Koala::Model::Comment->new(%data)->save;
   $self->render(json => {error => 0, comment => \%data});
 }
 

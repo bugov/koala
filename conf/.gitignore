@@ -1,2 +1,4 @@
 *
 !.gitignore
+!akismet.json.dist
+!database.json.dist
