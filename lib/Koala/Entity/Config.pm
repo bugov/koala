@@ -16,15 +16,14 @@ use JSON::XS;
       
       for my $file (<$FindBin::Bin/../conf/*.json>) {
         my $conf = try {
-          open(my $fh, "$FindBin::Bin/../conf/database.json") or die "Can't find $file";
+          open(my $fh, $file) or die "Can't find $file";
           my $config = <$fh>;
           close $fh;
           return decode_json $config;
         } catch {
           return {};
         };
-        
-        $this->config = { %{$this->config}, $conf };
+        $this->config = { %{$this->config}, %$conf };
       }
     }
   

@@ -24,14 +24,14 @@ sub create {
   );
   
   # Akismet
-  $config = Koala::Entity::Config->init->get_config->{akismet};
+  my $config = Koala::Entity::Config->new->get_config->{akismet};
   my $akismet = Net::Akismet->new(%$config) or die('Key verification failure!');
   my $fail = $akismet->check (
-      USER_IP => $this->tx->remote_address,
-      COMMENT_USER_AGENT => $this->req->headers->user_agent,
+      USER_IP => $self->tx->remote_address,
+      COMMENT_USER_AGENT => $self->req->headers->user_agent,
       COMMENT_CONTENT => $data{text},
       COMMENT_AUTHOR => $data{username},
-      REFERRER => $this->req->headers->referrer,
+      REFERRER => $self->req->headers->referrer,
 #      COMMENT_AUTHOR_EMAIL => $this->user->{mail},
   ) or die('Is the Akismet server dead?');
   return $self->render(json => {error => 401, comment => 'Seems like spam...'}) if 'true' eq $fail;
