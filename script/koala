@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use FindBin;
-BEGIN { unshift @INC, "$FindBin::Bin/../lib" }
+BEGIN { unshift @INC, "$FindBin::Bin/../lib", "/home/bugov/perl5/perlbrew/perls/perl-5.16.3/lib/site_perl/5.16.3/" }
 
 # Start command line interface for application
 require Mojolicious::Commands;
