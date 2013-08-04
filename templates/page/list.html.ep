@@ -3,17 +3,5 @@
 % use Mojo::ByteStream 'b';
 
 % for my $item (@$list) {
-<div>
-  <h2><%= $item->title %></h2>
-  <p>
-    % if ($item->legend) {
-      <%=b $item->legend %>
-    % } else {
-      <%=b $item->text %>
-    %}
-  </p>
-  <p>
-    <a href="<%= $item->url %>">more</a>
-  </p>
-</div>
+%= $self->render('page/list_item', partial => 1, item => $item);
 % }

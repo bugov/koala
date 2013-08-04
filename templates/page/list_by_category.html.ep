@@ -5,13 +5,5 @@
 <p><%= $category->legend %></p>
 
 % for my $item (@$list) {
-<div>
-  <h2><%= $item->title %></h2>
-  <p>
-    <%= $item->legend %>
-  </p>
-  <p>
-    <a href="<%= $item->url %>">more</a>
-  </p>
-</div>
+%= $self->render('page/list_item', partial => 1, item => $item);
 % }
