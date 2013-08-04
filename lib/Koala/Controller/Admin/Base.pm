@@ -70,6 +70,19 @@ sub create {
     ->redirect_to("admin_${name}_show", id => $item->id);
 }
 
+# Method: delete
+#   Delete one something. Just delete.
+sub delete {
+  my $self = shift;
+  my ($model) = $self->_get_model();
+  eval { $model->new(id => int $self->param('id'))->delete };
+  
+  my $message = Mojo::Util::camelize($self->model_name) . ' deleted';
+  my $name = Mojo::Util::decamelize($self->model_name);
+  $self->flash({message => $message, type => 'success'})
+    ->redirect_to("admin_${name}_list");
+}
+
 # Method: _get_model
 #   Get model and method's infix.
 # Parameters:
