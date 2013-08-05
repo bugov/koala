@@ -9,6 +9,7 @@
     <th>Status</th>
     <th>Create date</th>
     <th>Text</th>
+    <th>Actions</th>
   </tr>
 <% for my $item (@$list) { %>
   <tr onclick="window.location='<%= url_for 'admin_comment_show', id => $item->id %>'">
@@ -18,6 +19,7 @@
     <td><%= ($item->status ? 'opened' : 'close') %></td>
     <td><%= dt $item->create_at %></td>
     <td><%= $item->text %></td>
+    <td><a class="btn" href="<%= url_for 'admin_comment_delete', id => $item->id %>"><i class="icon-remove"></i></a></td>
   </tr>
 <% } %>
 </table>
