@@ -1,44 +1,22 @@
 package Koala::Controller::Admin::Page;
-use Mojo::Base 'Mojolicious::Controller';
+use Mojo::Base 'Koala::Controller::Admin::Base';
 use Koala::Model::Page;
 use Koala::Model::Comment;
 use Koala::Model::Tag;
 use Koala::Entity::File;
 
-my $size = 20;
+has 'model_name' => 'page';
 
-# Method: list
-#   List of pages. $size is a SQL limit.
-sub list {
-  my $self = shift;
-  my $page = int $self->param('page');
-  my $page_list = eval { Koala::Model::Page::Manager
-    ->get_pages(sort_by => '-id', limit => $size, offset => $size * ($page-1)) }
-      or return $self->not_found;
-  my $page_count = Koala::Model::Page::Manager->get_pages_count;
-  $self->render('page/admin/list', page_list => $page_list, page_count => $page_count, limit => $size);
-}
-
-# Method: show
-#   Show one page for editing.
-sub show {
-  my $self = shift;
-  my $page = Koala::Model::Page->new(id => int $self->param('id'))->load;
-  $self->render('page/admin/form', page => $page,
-    tag_list => Koala::Model::Tag::Manager->get_tags);
-}
-
-# Method: edit
-#   Edit one page. Don't show form, just edit.
-sub edit {
-  my $self = shift;
-  my $page = Koala::Model::Page->new(id => int $self->param('id'))->load;
-  
+# Method: _dehydrate
+#   Redefine if you wanna custom work with input.
+sub _dehydrate {
+  my ($self, $page) = @_;
+  my ($model) = $self->_get_model();
   $page->$_($self->param($_)) for qw/url title legend status
     keywords description text author_id approver_id owner_id category_id/;
   $page->create_at($self->dt($self->param('create_at')));
   $page->modify_at($self->dt($self->param('modify_at')));
-  
+    
   if ($self->param('picture')->size) { # Load picture if exists
     my $file = Koala::Entity::File->new->init($self->param('picture'));
     $file->author_id($self->user->id);
@@ -47,25 +25,6 @@ sub edit {
   }
   
   $page->setTags(title => split /, /, $self->param('tags'));
-  $page->save;
-  
-  $self->flash({message => 'Page edited', type => 'success'})
-    ->redirect_to('admin_page_show', id => $page->id);
-}
-
-# Method: create
-#   Create one page. Just create.
-sub create {
-  my $self = shift;
-  my $page = Koala::Model::Page->new();
-  $page->$_($self->param($_)) for qw/url title legend status
-    keywords description text author_id approver_id owner_id category_id/;
-  $page->create_at($self->dt($self->param('create_at')));
-  $page->modify_at($self->dt($self->param('modify_at')));
-  $page->setTags(title => split /, /, $self->param('tags'));
-  $page->save;
-  $self->flash({message => 'Page created', type => 'success'})
-    ->redirect_to('admin_page_show', id => $page->id);
 }
 
 1;
