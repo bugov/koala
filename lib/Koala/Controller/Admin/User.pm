@@ -4,6 +4,19 @@ use Koala::Model::User;
 
 has 'model_name' => 'user';
 
+# Method: list
+#   Show user list.
+sub list {
+  my $self = shift;
+  my $page = int $self->param('page');
+  my $user_list = Koala::Model::User::Manager->get_users(
+    sort_by => 'id', limit => $self->size,
+    offset => $self->size * ($page-1)
+  );
+  my $user_count = Koala::Model::User::Manager->get_users_count();
+  $self->render('user/admin/list', user_list => $user_list, user_count => $user_count, limit => $self->size);
+}
+
 # Method: _dehydrate
 #   Redefine if you wanna custom work with input.
 sub _dehydrate {
