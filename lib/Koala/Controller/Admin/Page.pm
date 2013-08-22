@@ -7,6 +7,18 @@ use Koala::Entity::File;
 
 has 'model_name' => 'page';
 
+# Method: list
+#   List of pages. $size is a SQL limit.
+sub list {
+  my $self = shift;
+  my $page = int $self->param('page');
+  my $page_list = eval { Koala::Model::Page::Manager
+    ->get_pages(sort_by => '-id', limit => $size, offset => $size * ($page-1)) }
+      or return $self->not_found;
+  my $page_count = Koala::Model::Page::Manager->get_pages_count;
+  $self->render('page/admin/list', page_list => $page_list, page_count => $page_count, limit => $size);
+}
+
 # Method: _dehydrate
 #   Redefine if you wanna custom work with input.
 sub _dehydrate {
