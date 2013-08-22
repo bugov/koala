@@ -220,8 +220,10 @@ sub addHelpers {
   $self->helper('crlf' => sub {
     my $self = shift;
     my ($text) = @_;
+    $text =~ s/</&lt;/g;
+    $text =~ s/>/&gt;/g;
     $text =~ s/\r?\n/<br>/g;
-    return $text;
+    return Mojo::ByteStream->new($text);
   });
 }
 
