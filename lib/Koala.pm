@@ -216,6 +216,13 @@ sub addHelpers {
     my $self = shift;
     return $self->render(json => {error => 404, code => 404, 'message' => 'Page not found'});
   });
+  
+  $self->helper('crlf' => sub {
+    my $self = shift;
+    my ($text) = @_;
+    $text =~ s/\r?\n/<br>/g;
+    return $text;
+  });
 }
 
 1;

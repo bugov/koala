@@ -23,7 +23,7 @@
         </div>
         <span class="title"><%= $c->title %></span>
       </div>
-      <p class="text"><%= $c->text %></p>
+      <p class="text"><%=crlf $c->text %></p>
     </div>
     % }
     

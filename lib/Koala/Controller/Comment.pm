@@ -50,6 +50,7 @@ sub load {
     where => [page_id => $id, status => {gt => 0}], sort_by => '-id', limit => $size, offset => $offset);
   for my $c (0 .. $#$comment_list) {
     $comment_list->[$c] = $comment_list->[$c]->to_h;
+    $comment_list->[$c]->{text} = $self->crlf($comment_list->[$c]->{text});
     $comment_list->[$c]->{create_at} = $self->dt($comment_list->[$c]->{create_at});
   }
   $self->render(json => {error => 0, comments => $comment_list});
