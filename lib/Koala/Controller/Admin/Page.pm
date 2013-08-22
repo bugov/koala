@@ -13,10 +13,10 @@ sub list {
   my $self = shift;
   my $page = int $self->param('page');
   my $page_list = eval { Koala::Model::Page::Manager
-    ->get_pages(sort_by => '-id', limit => $size, offset => $size * ($page-1)) }
+    ->get_pages(sort_by => '-id', limit => $self->size, offset => $self->size * ($page-1)) }
       or return $self->not_found;
   my $page_count = Koala::Model::Page::Manager->get_pages_count;
-  $self->render('page/admin/list', page_list => $page_list, page_count => $page_count, limit => $size);
+  $self->render('page/admin/list', page_list => $page_list, page_count => $page_count, limit => $self->size);
 }
 
 # Method: _dehydrate
