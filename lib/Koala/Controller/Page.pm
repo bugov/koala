@@ -9,7 +9,7 @@ my $size = 20;
 
 sub list {
   my $self = shift;
-  my $page = int $self->param('page') || 1;
+  my $page = int($self->param('page') || 1);
   my $list = eval {
     Koala::Model::Page::Manager->get_pages(
       where => [status => {ge => 50}],

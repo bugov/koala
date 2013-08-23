@@ -1,4 +1,4 @@
 % layout 'front';
-% '#404 Not Found';
+% title '#404 Not Found';
 
 <h1>Page not found</h1>

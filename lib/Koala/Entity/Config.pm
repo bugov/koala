@@ -31,7 +31,7 @@ use JSON::XS;
       my $message = '';
       $message .= qq{Can't find config "$_" but it's really necessary.\n}
         for grep {not exists $this->config->{$_}} @{$this->required};
-      say($message, "See ./conf directory for more information"), exit if $message;
+      say($message, "See ./conf directory for more information."), exit if $message;
     }
   
   # Method: get_config
