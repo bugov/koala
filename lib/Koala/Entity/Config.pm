@@ -2,10 +2,12 @@
 #   Config singleton
 package Koala::Entity::Config;
 use Pony::Object qw/:try -singleton/;
+use Pony::Object::Throwable;
 use FindBin;
 use JSON::XS;
   
   protected config => {};
+  protected required => ['database'];
   
   # Method: init
   #   Constructor. Get all configs.
@@ -25,6 +27,11 @@ use JSON::XS;
         };
         $this->config = { %{$this->config}, %$conf };
       }
+      
+      my $message = '';
+      $message .= qq{Can't find config "$_" but it's really necessary.\n}
+        for grep {not exists $this->config->{$_}} @{$this->required};
+      say($message, "See ./conf directory for more information"), exit if $message;
     }
   
   # Method: get_config
