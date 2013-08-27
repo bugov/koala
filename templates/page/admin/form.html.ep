@@ -1,6 +1,7 @@
 % layout 'default';
 % no strict;
-% $page = undef unless defined $page;
+% $item = undef unless defined $item;
+% $page = $item;
 % title ( $page ? 'Edit page' : 'Create new page' );
 
 <form action="<%= ($page ? url_for('admin_page_edit', id => $page->id) : url_for('admin_page_create')) %>" method="post" enctype="multipart/form-data">
