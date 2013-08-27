@@ -46,7 +46,7 @@ sub startup {
   $r->get('page/:id/comment/load')->to('comment#load', namespace => 'Koala::Controller')->name('page_comment_load');
   # Page & comments for Admins
   my $p = $admin->route('page')->to('page#', namespace => 'Koala::Controller::Admin');
-    $p->get ('comments/:page')->to('comment#list', page => 1)->name('admin_page_comments');
+    $p->get ('comments/:page')->to('comment#list', page => 1)->name('admin_comment_list');
     $p->get ('comments/delete/:id')->to('comment#delete')->name('admin_comment_delete');
     $p->post('comments/:id')->to('comment#edit')->name('admin_comment_edit');
     $p->get ('list/:page')->to('#list', page => 1)->name('admin_page_list');

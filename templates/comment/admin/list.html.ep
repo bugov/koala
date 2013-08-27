@@ -24,4 +24,4 @@
 <% } %>
 </table>
 
-%= paginator 'admin_page_comments', int stash('page'), $count, $limit
+%= paginator 'admin_comment_list', int stash('page'), $count, $limit
