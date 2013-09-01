@@ -1,0 +1,42 @@
+% layout 'default';
+% title 'Edit comment — #' . $item->id;
+
+<form action="<%= url_for 'admin_comment_edit', id => $item->id %>" method="post">
+<table class="table">
+  <tr>
+    <td><label class="span2">Page</label></td>
+    <td><a href="<%= url_for 'admin_page_show', id => $item->page_id %>"><%= $item->page->title %></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Status</label></td>
+    <td><select name="status">
+      <option value="0" <% if (!$item->status) {%> selected="selected" <%} %> >not approved</option>
+      <option value="1" <% if ( $item->status) {%> selected="selected" <%} %> >approved</option>
+    </select></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Create date</label></td>
+    <td><%= dt $item->create_at %></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Title</label></td>
+    <td><input class="span10" type="text" name="title" value="<%= $item->title %>"></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Author <a href="<%= url_for 'admin_user_show', id => $item->author_id %>"><%= ($item->author_id ? 'registred' : '') %></a></label></td>
+    <td><input class="span10" type="text" name="username" value="<%= $item->username %>"></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Text</label></td>
+    <td>
+      <textarea class="span10" name="text"><%= $item->text %></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td colspan=2 style="text-align: center">
+      <button class="btn" type="submit">Edit</button>
+      <button class="btn" type="reset">Cancel</button>
+    </td>
+  </tr>
+</table>
+</form>

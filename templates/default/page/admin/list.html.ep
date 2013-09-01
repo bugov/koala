@@ -1,0 +1,29 @@
+% layout 'default';
+% title 'Page list';
+
+<a href="<%= url_for 'admin_page_create' %>" class="btn btn-success alignright btn-new">Create new</a>
+
+<table class="wide table">
+  <tr>
+    <th>#</th>
+    <th>Url</th>
+    <th>Title</th>
+    <th>Legend</th>
+    <th>Status</th>
+    <th>Create date</th>
+    <th>Author</th>
+  </tr>
+<% for my $page (@$page_list) { %>
+  <tr onClick="window.location='<%= url_for 'admin_page_show', id => $page->id %>'">
+    <td><%= $page->id %></td>
+    <td><%= $page->url %></td>
+    <td><%= $page->title %></td>
+    <td><%= substr $page->legend, 0, 64 %> <%= (length $page->legend > 64 ? '...' : '') %></td>
+    <td><%= $page->status %></td>
+    <td><%= dt $page->create_at %></td>
+    <td><%= $page->author->username %></td>
+  </tr>
+<% } %>
+</table>
+
+%= paginator 'admin_page_list', int stash('page'), $page_count, $limit

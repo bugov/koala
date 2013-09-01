@@ -1,0 +1,14 @@
+% layout 'front';
+% title 'Login form';
+
+<form method="post" action="<%= url_for 'user_login' %>">
+  <div>
+    <input name="username" placeholder="Name" type="text">
+  </div>
+  <div>
+    <input name="password" placeholder="Password" type="password">
+  </div>
+  <div>
+    <button class="btn" type="submit">Sign in</button>
+  </div>
+</form>

@@ -1,0 +1,27 @@
+% layout 'default';
+% no strict;
+% $item = undef unless defined $item;
+% title ( $item ? 'Edit category' : 'Create new category' );
+
+<form action="<%= ($item ? url_for('admin_category_edit', id => $item->id) : url_for('admin_category_create')) %>" method="post" enctype="multipart/form-data">
+<table class="table edit-table">
+  <tr>
+    <td><label class="span2">Title</label></td>
+    <td><input class="span10" name="title" type="text" placeholder="Title" value="<%= $item ? $item->title : '' %>"></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Url</label></td>
+    <td><input class="span10" name="url" type="text" placeholder="Url"  value="<%= $item ? $item->url : '' %>"></td>
+  </tr>
+  <tr>
+    <td><label class="span2">Legend</label></td>
+    <td><textarea class="span10" name="legend" placeholder="Legend"><%= $item ? $item->legend : '' %></textarea></td>
+  </tr>
+  <tr>
+    <td colspan=2 style="text-align: center">
+      <button class="btn" type="submit"><%= $item ? 'Edit' : 'Create' %> page</button>
+      <button class="btn" type="reset">Cancel</button>
+    </td>
+  </tr>
+</table>
+</form>

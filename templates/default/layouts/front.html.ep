@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <meta keywords="<%= content_for 'keywords' %>">
+    <meta description="<%= content_for 'description' %>">
+    <link rel="shortcut icon" href="/favicon.ico" />
+    %= stylesheet '/css/bootstrap.min.css'
+    %= stylesheet '/css/bootstrap-responsive.min.css'
+    %= stylesheet '/css/style.css'
+    %= javascript '/js/html5.js'
+    %= javascript '/js/jquery.min.js'
+    %= javascript '/js/bootstrap.min.js'
+  </head>
+  <body>
+    <div class="container">
+      <div id="content" class="span8">
+        <%= content %>
+      </div>
+      <div id="sidebar" class="span3">
+        <a href="/"><h1>Bugov's blog</h1></a>
+        <p>Another geek in the world</p>
+        <%= category_links() %>
+        <%= tag_links() %>
+	<ul class="nav nav-list">
+		<li class="nav-header">Other</li>
+		<li><a href="http://bugov.net/duck.html">Duck — Универсальный отладчик "Уточка"</a></li>
+		<li><a href="http://bugov.net/http-story/index.html">Быть богом — история протокола HTTP</a></li>
+	</ul>
+      </div>
+    </div>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter21654310 = new Ya.Metrika({id:21654310,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/21654310" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

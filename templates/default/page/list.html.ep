@@ -1,0 +1,7 @@
+% layout 'front';
+% title 'Bugov\'s blog';
+% use Mojo::ByteStream 'b';
+
+% for my $item (@$list) {
+%= $self->render('page/list_item', partial => 1, item => $item);
+% }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    %= stylesheet '/css/bootstrap.min.css'
+    %= stylesheet '/css/bootstrap-responsive.min.css'
+    %= stylesheet '/css/bootstrap-datetimepicker.min.css'
+    %= stylesheet '/css/style.css'
+    %= javascript '/js/html5.js'
+    %= javascript '/js/jquery.min.js'
+    %= javascript '/js/bootstrap.min.js'
+    %= javascript '/js/bootstrap-datetimepicker.min.js'
+    %= javascript '/ckeditor/ckeditor.js'
+    %= javascript '/ckeditor/config.js'
+    %= javascript '/js/script.js'
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/"><img src="/img/logo.png"> Koala</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li>
+                <a href="<%= url_for 'admin_page_list', page => 1 %>"><%= 'Pages' %></a>
+              </li>
+              <li>
+                <a href="<%= url_for 'admin_category_list', page => 1 %>"><%= 'Categories' %></a>
+              </li>
+              <li>
+                <a href="<%= url_for 'admin_tag_list', page => 1 %>"><%= 'Tags' %></a>
+              </li>
+              <li>
+                <a href="<%= url_for 'admin_user_list', page => 1 %>"><%= 'Users' %></a>
+              </li>
+              <li>
+                <a href="<%= url_for 'admin_comment_list', page => 1 %>"><%= 'Comments' %></a>
+              </li>
+            </ul>
+          </div>
+      <% if (user->is_registred()) { %>
+        <button class="btn alignright" data-href="<%= url_for 'user_home' %>">
+          <i class="icon-user"></i> <%= user->username %></button>
+      <% } else { %>
+        <a href="<%= url_for 'user_login_form' %>">Sign in</a> /
+        <a href="<%= url_for 'user_reg_form' %>">Sign up</a>
+      <% } %>
+        </div>
+      </div>
+    </div>
+    <div class="container admin">
+      <h1 class="title"><%= title %></h1>
+      %= content
+    </div>
+  </body>
+  <script>
+    $(document).ready(function() {
+      $(".datepicker").datetimepicker({language: 'ru-RU'});
+      
+      // Init ckeditor for all forms.
+      $(".editor").each(function () {
+        if ($(this).attr('id') == undefined || $(this).attr('id') == '') {
+          $(this).attr('id', 'textarea-' + Math.round(Math.random() * 1000000000));
+        }
+        try {
+          CKEDITOR.replace($(this).attr('id'), {
+            filebrowserUploadUrl: '/file/upload',
+            filebrowserImageUploadUrl: '/file/upload?type=image',
+          });
+        } catch (e) {
+          console.log('Can`t init ckeditor');
+        }
+      });
+    });
+  </script>
+</html>

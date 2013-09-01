@@ -1,0 +1,4 @@
+<div class="nav-header">Tags</div>
+% for my $c (@$list) {
+<a href="/<%= $c->url %>"><i class="icon-tag"></i><%= $c->title %></a> &nbsp;
+% }

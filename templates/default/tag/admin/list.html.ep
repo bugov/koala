@@ -1,0 +1,23 @@
+% layout 'default';
+% title 'Tag list';
+
+<a href="<%= url_for 'admin_tag_create' %>" class="btn btn-success alignright btn-new">Create new</a>
+
+<table class="wide table">
+  <tr>
+    <th>#</th>
+    <th>Url</th>
+    <th>Title</th>
+    <th>Legend</th>
+  </tr>
+<% for my $item (@$list) { %>
+  <tr onClick="window.location='<%= url_for 'admin_tag_show', id => $item->id %>'">
+    <td><%= $item->id %></td>
+    <td><%= $item->url %></td>
+    <td><%= $item->title %></td>
+    <td><%= substr $item->legend, 0, 64 %> <%= (length $item->legend > 64 ? '...' : '') %></td>
+  </tr>
+<% } %>
+</table>
+
+%= paginator 'admin_tag_list', int stash('page'), $count, $limit
