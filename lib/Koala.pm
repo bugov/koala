@@ -131,6 +131,7 @@ sub addHelpers {
   
   $self->helper('category_list' => sub {
     my ($self, $default) = @_;
+    $default ||= 1;
     my $category_list = Koala::Model::Category::Manager->get_categories();
     return Mojo::ByteStream->new(
       $self->render('category/helper/category_list', partial => 1,

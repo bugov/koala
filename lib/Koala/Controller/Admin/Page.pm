@@ -19,6 +19,40 @@ sub list {
   $self->render('page/admin/list', page_list => $page_list, page_count => $page_count, limit => $self->size);
 }
 
+# Method: show
+#   Show one page for editing.
+sub show {
+  my $self = shift;
+  my $page = Koala::Model::Page->new(id => int $self->param('id'))->load;
+  $self->render('page/admin/form', item => $page,
+    tag_list => Koala::Model::Tag::Manager->get_tags);
+}
+
+# Method: edit
+#   Edit one page. Don't show form, just edit.
+sub edit {
+  my $self = shift;
+  my $page = Koala::Model::Page->new(id => int $self->param('id'))->load;
+  
+  $page->$_($self->param($_)) for qw/url title legend status
+    keywords description text author_id approver_id owner_id category_id/;
+  $page->create_at($self->dt($self->param('create_at')));
+  $page->modify_at($self->dt($self->param('modify_at')));
+  
+  if ($self->param('picture')->size) { # Load picture if exists
+    my $file = Koala::Entity::File->new->init($self->param('picture'));
+    $file->author_id($self->user->id);
+    $file->save;
+    $page->picture_id($file->id); 
+  }
+  
+  $page->setTags(title => split /, /, $self->param('tags'));
+  $page->save;
+  
+  $self->flash({message => 'Page edited', type => 'success'})
+    ->redirect_to('admin_page_show', id => $page->id);
+}
+
 # Method: _dehydrate
 #   Redefine if you wanna custom work with input.
 sub _dehydrate {
