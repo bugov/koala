@@ -1,9 +1,0 @@
-% layout 'front';
-% title $category->title . ' category';
-
-<h1>Category "<%= $category->title %>"</h1>
-<p><%= $category->legend %></p>
-
-% for my $item (@$list) {
-%= $self->render('page/list_item', partial => 1, item => $item);
-% }

@@ -1,9 +1,0 @@
-% layout 'front';
-% title $tag->title . ' tag';
-
-<h1>Tag "<%= $tag->title %>"</h1>
-<p><%= $tag->legend %></p>
-
-% for my $item (reverse @$list) {
-%= $self->render('page/list_item', partial => 1, item => $item);
-% }

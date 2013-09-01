@@ -1,5 +1,0 @@
-<select name="status">
-% while (my($k, $v) = each %$status_list) {
-  <option <% if ($v == $default) { %> selected="selected" <% } %> value="<%= $v %>"><%= $k %></option>
-% }
-</select>

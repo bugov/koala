@@ -1,2 +1,0 @@
-% layout 'front';
-% title 'Home - ' . $user->username;

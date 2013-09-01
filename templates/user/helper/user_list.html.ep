@@ -1,8 +1,0 @@
-<select name="<%= ($html_name ? $html_name : 'user') %>">
-% for my $u (@$user_list) {
-  <option
-    <% if ($u->id == $default) { %> selected="selected" <% } %>
-    value="<%= $u->id %>"
-  ><%= $u->username %></option>
-% }
-</select>
