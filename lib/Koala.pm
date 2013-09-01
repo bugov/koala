@@ -21,8 +21,8 @@ sub startup {
     $FindBin::Bin.'/../templates/default'
   ]);
   $self->static->paths([
-    $FindBin::Bin.'/../www/custom/'.$config->{template},
-    $FindBin::Bin.'/../www/default'
+    $FindBin::Bin.'/../public/custom/'.$config->{template},
+    $FindBin::Bin.'/../public/default'
   ]);
   
   # Documentation browser under "/perldoc"
