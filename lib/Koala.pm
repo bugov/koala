@@ -7,11 +7,17 @@ use Koala::Entity::User;
 use Koala::Model::User;
 use Koala::Model::Category;
 use Koala::Model::Tag;
+use Koala::Entity::Config;
+use FindBin;
 
 # This method will run once at server start
 sub startup {
   my $self = shift;
-
+  
+  # Include blog's template.
+  my $config = Koala::Entity::Config->new->get_config->{blog};
+  $self->renderer->paths([$FindBin::Bin.'/../template/'.$config->{template}]);
+  
   # Documentation browser under "/perldoc"
   $self->plugin('PODRenderer');
   $self->addHelpers();
