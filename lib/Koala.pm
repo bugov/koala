@@ -17,11 +17,11 @@ sub startup {
   # Include blog's template.
   my $config = Koala::Entity::Config->new->get_config->{blog};
   $self->renderer->paths([
-    $FindBin::Bin.'/../templates/'.$config->{template},
+    $FindBin::Bin.'/../templates/custom/'.$config->{template},
     $FindBin::Bin.'/../templates/default'
   ]);
   $self->static->paths([
-    $FindBin::Bin.'/../www/'.$config->{template},
+    $FindBin::Bin.'/../www/custom/'.$config->{template},
     $FindBin::Bin.'/../www/default'
   ]);
   
