@@ -16,7 +16,14 @@ sub startup {
   
   # Include blog's template.
   my $config = Koala::Entity::Config->new->get_config->{blog};
-  $self->renderer->paths([$FindBin::Bin.'/../template/'.$config->{template}]);
+  $self->renderer->paths([
+    $FindBin::Bin.'/../template/'.$config->{template},
+    @{$self->renderer->paths}
+  ]);
+  $self->static->paths([
+    $FindBin::Bin.'/../www/'.$config->{template},
+    @{$self->static->paths}
+  ]);
   
   # Documentation browser under "/perldoc"
   $self->plugin('PODRenderer');
