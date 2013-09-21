@@ -30,7 +30,24 @@
     <td><label class="span2">Picture</label></td>
     <td>
       <% if ($page && $page->picture) { %>
-        <div><img src="/upload/<%= $page->picture->path %>"></div>
+        <div>
+          <a href="#cropWindow" data-toggle="modal">
+            <img src="/<%= $page->picture->path %>">
+          </a>
+          <div id="cropWindow" class="modal hide fade" role="dialog" aria-labelledby="cropWindowLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="cropWindowLabel">Edit post picture</h3>
+            </div>
+            <div class="modal-body">
+              <img id="pictureCropOriginal" src="/<%= $page->picture->path %>">
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+              <button id="savePictureCrop" class="btn btn-primary">Save</button>
+            </div>
+          </div>
+        </div>
       <% } %>
       <input type="file" name="picture" placeholder="Picture">
     </td>
@@ -137,4 +154,45 @@
     });
   }
   add_tag('');
+  
+% if ($page && $page->picture) {
+  /**
+   * Crop Post Picture.
+   */
+  $(function(){
+    var pictureCrop = {
+      x: 0,
+      y: 0,
+      w: 0,
+      h: 0
+    };
+    
+    $('#pictureCropOriginal').Jcrop({
+      onChange: changeCoords,
+      onSelect: changeCoords
+    });
+    
+    $('#savePictureCrop').click(function() {
+      if (pictureCrop.w == 0 || pictureCrop.h == 0) {
+        return false;
+      }
+      $.post(
+        '<%= url_for 'admin_page_picture_crop', id => $page->picture->id %>',
+        pictureCrop,
+        function (response) {
+          console.log(response);
+        },
+        'json'
+      );
+      return false;
+    });
+    
+    function changeCoords(c) {
+      pictureCrop.x = c.x;
+      pictureCrop.y = c.y;
+      pictureCrop.h = c.h;
+      pictureCrop.w = c.w;
+    }
+  });
+% }
 </script>

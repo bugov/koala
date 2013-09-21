@@ -4,6 +4,7 @@ use Koala::Model::Page;
 use Koala::Model::Comment;
 use Koala::Model::Tag;
 use Koala::Entity::File;
+use Imager;
 
 has 'model_name' => 'page';
 
@@ -71,6 +72,11 @@ sub _dehydrate {
   }
   
   $page->setTags(title => split /, /, $self->param('tags'));
+}
+
+sub picture_crop {
+  my $self = shift;
+  return $self->render(json => {error => 0});
 }
 
 1;

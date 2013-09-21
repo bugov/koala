@@ -22,7 +22,8 @@ sub startup {
   ]);
   $self->static->paths([
     $FindBin::Bin.'/../public/custom/'.$config->{template},
-    $FindBin::Bin.'/../public/default'
+    $FindBin::Bin.'/../public/default',
+    $FindBin::Bin.'/../public/upload',
   ]);
   
   # Documentation browser under "/perldoc"
@@ -68,6 +69,7 @@ sub startup {
     $p->get (':id') ->to('#show')->name('admin_page_show');
     $p->post(':id') ->to('#edit')->name('admin_page_edit');
     $p->get ('comment/:id')->to('comment#show')->name('admin_comment_show');
+    $p->post('picture/crop')->to('#picture_crop')->name('admin_page_picture_crop');
   # Category for Admins
   my $c = $admin->route('category')->to('category#', namespace => 'Koala::Controller::Admin');
     $c->get ('list/:page')->to('#list', page => 1)->name('admin_category_list');
@@ -107,16 +109,37 @@ sub addHelpers {
   
   $self->helper('dt' => sub {
     # Format datetime
-    my ($self, $time) = @_;
+    my ($self, $time, $format) = @_;
     
+    my $reformat = sub {
+      my ($dt, $fmt) = @_;
+      
+      given ($fmt) {
+        when ('dd.mm.yy') {
+          my $d = $dt->day   < 10 ? '0'.$dt->day   : $dt->day;
+          my $m = $dt->month < 10 ? '0'.$dt->month : $dt->month;
+          my $y = substr $dt->year, 2;
+          return "$d.$m.$y";
+        }
+        default { return "Invalid format" }
+      }
+    };
+    
+    # current time
     if (!defined $time) {
       my $dt = DateTime->now();
-      return DateTime::Format::MySQL->format_datetime($dt);
+      return ( $format
+                ? $reformat->($dt, $format)
+                : DateTime::Format::MySQL->format_datetime($dt) );
     }
+    # show time
     elsif ($time =~ /^\d+$/) {
       my $dt = DateTime->from_epoch(epoch => $time);
-      return DateTime::Format::MySQL->format_datetime($dt);
+      return ( $format
+                ? $reformat->($dt, $format)
+                : DateTime::Format::MySQL->format_datetime($dt) );
     }
+    # get time from string
     elsif ($time =~ /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/) {
       my $dt = DateTime::Format::MySQL->parse_datetime($time);
       return $dt->epoch();

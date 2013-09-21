@@ -10,7 +10,7 @@ __PACKAGE__->meta->setup(
     url         => { type => 'varchar', length => 64 },
     title       => { type => 'varchar', not_null => 1, length => 64 },
     category_id => { type => 'integer' },
-    legend      => { type => 'varchar', not_null => 1, length => 255 },
+    legend      => { type => 'varchar', not_null => 1, length => 30000 },
     picture_id  => { type => 'varchar', length => 64 },
     status      => { type => 'integer' },
     create_at   => { type => 'integer', not_null => 1 },
@@ -52,6 +52,10 @@ __PACKAGE__->meta->setup(
       type      => 'many to many',
       map_class => 'Koala::Model::PageToTag',
     },
+    comments => {
+      type      => 'one to many',
+      #map_class => 'Koala::Model::Comment',
+    }
   ],
 );
 
@@ -152,7 +156,7 @@ __END__
     `url` varchar(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     `title` varchar(64) NOT NULL,
     `category_id` int(11) unsigned DEFAULT NULL,
-    `legend` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+    `legend` varchar(30000) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
     `picture_id` int(11) DEFAULT NULL,
     `status` int(10) unsigned NOT NULL,
     `create_at` int(11) unsigned DEFAULT NULL,

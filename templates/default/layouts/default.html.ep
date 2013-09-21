@@ -6,6 +6,7 @@
     %= stylesheet '/css/bootstrap.min.css'
     %= stylesheet '/css/bootstrap-responsive.min.css'
     %= stylesheet '/css/bootstrap-datetimepicker.min.css'
+    %= stylesheet '/jcrop/css/jquery.Jcrop.min.css'
     %= stylesheet '/css/style.css'
     %= javascript '/js/html5.js'
     %= javascript '/js/jquery.min.js'
@@ -13,13 +14,14 @@
     %= javascript '/js/bootstrap-datetimepicker.min.js'
     %= javascript '/ckeditor/ckeditor.js'
     %= javascript '/ckeditor/config.js'
+    %= javascript '/jcrop/js/jquery.Jcrop.min.js'
     %= javascript '/js/script.js'
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="/"><img src="/img/logo.png"> Koala</a>
+          <a class="brand" href="/"><img src="/img/admin/logo.png"> Koala</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li>
