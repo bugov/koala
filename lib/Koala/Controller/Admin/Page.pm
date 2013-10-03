@@ -3,8 +3,7 @@ use Mojo::Base 'Koala::Controller::Admin::Base';
 use Koala::Model::Page;
 use Koala::Model::Comment;
 use Koala::Model::Tag;
-use Koala::Entity::File;
-use Imager;
+use Koala::Model::File;
 
 has 'model_name' => 'page';
 
@@ -41,7 +40,7 @@ sub edit {
   $page->modify_at($self->dt($self->param('modify_at')));
   
   if ($self->param('picture')->size) { # Load picture if exists
-    my $file = Koala::Entity::File->new->init($self->param('picture'));
+    my $file = Koala::Model::File->new->init_by_mojo_asset($self->param('picture'));
     $file->author_id($self->user->id);
     $file->save;
     $page->picture_id($file->id); 
@@ -65,7 +64,7 @@ sub _dehydrate {
   $page->modify_at($self->dt($self->param('modify_at')));
     
   if ($self->param('picture')->size) { # Load picture if exists
-    my $file = Koala::Entity::File->new->init($self->param('picture'));
+    my $file = Koala::Model::File->new->init_by_mojo_asset($self->param('picture'));
     $file->author_id($self->user->id);
     $file->save;
     $page->picture_id($file->id); 
@@ -76,7 +75,24 @@ sub _dehydrate {
 
 sub picture_crop {
   my $self = shift;
-  return $self->render(json => {error => 0});
+  my $file = eval { Koala::Model::File->new(id => $self->param('id'))->load }
+    or return $self->not_found_json;
+  
+  my $old_path = $file->path;
+  $file->generate_path;
+  $file = $file->copy_file($old_path, $file->path);
+  
+  $file->crop(
+    x => $self->param('x'),
+    y => $self->param('y'),
+    w => $self->param('w'),
+    h => $self->param('h'),
+  );
+  
+  unlink($old_path);
+  $file->save();
+  
+  return $self->render(json => {error => 0, img_src => $file->get_url});
 }
 
 1;
