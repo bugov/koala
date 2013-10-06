@@ -1,7 +1,9 @@
 package Koala;
+
 use Mojo::Base 'Mojolicious';
 use DateTime;
 use DateTime::Format::MySQL;
+use DateTime::Format::HTTP;
 use Mojo::ByteStream;
 use Koala::Entity::User;
 use Koala::Model::User;
@@ -86,9 +88,12 @@ sub startup {
     $t->get (':id/') ->to('#show')->name('admin_tag_show');
     $t->post(':id/') ->to('#edit')->name('admin_tag_edit');
   # File
-  my $f = $r->route('file')->to('file#', namespace => 'Koala::Controller');
+  my $f = $r->route('file')->to('file#', namespace => 'Koala::Controller')->name('index_rss');
     $f->post('upload/')->to('#upload')->name('file_upload');
-    
+  
+  # RSS
+  $r->get('feed')->to('page#feed', format => 'rss', namespace => 'Koala::Controller');
+  
   # Show Page
   $r->get('*url')->to('page#show', namespace => 'Koala::Controller')->name('page_show');
   
@@ -121,6 +126,9 @@ sub addHelpers {
           my $m = $dt->month < 10 ? '0'.$dt->month : $dt->month;
           my $y = substr $dt->year, 2;
           return "$d.$m.$y";
+        }
+        when ('GMT') {
+          DateTime::Format::HTTP->format_datetime($dt);
         }
         default { return "Invalid format" }
       }
@@ -238,30 +246,12 @@ sub addHelpers {
     Mojo::ByteStream->new("<div class=\"paginator\">$html</div>");
   });
   
-  $self->helper('error_json' => sub {
-    my $self = shift;
-    my %data = (code => 500, @_);
-    return $self->render(json => \%data);
-  });
-  
-  $self->helper('not_found' => sub {
-    my $self = shift;
-    return $self->render(template => 'not_found', code => 404);
-  });
-  
-  $self->helper('not_found_json' => sub {
-    my $self = shift;
-    return $self->render(json => {error => 404, code => 404, 'message' => 'Page not found'});
-  });
-  
-  $self->helper('crlf' => sub {
-    my $self = shift;
-    my ($text) = @_;
-    $text =~ s/</&lt;/g;
-    $text =~ s/>/&gt;/g;
-    $text =~ s/\r?\n/<br>/g;
-    return Mojo::ByteStream->new($text);
-  });
+  # Simple helpers:
+  $self->helper('config' => sub { Koala::Entity::Config->new->get_config });
+  $self->helper('error_json' => sub { $_[0]->render(json => {code => 500, @_[1..$#_]}) });
+  $self->helper('not_found' => sub { shift->render(template => 'not_found', code => 404) });
+  $self->helper('not_found_json' => sub { shift->render(json => {error => 404, code => 404, 'message' => 'Page not found'}) });
+  $self->helper('crlf' => sub { $_[1] =~ s/</&lt;/g; $_[1] =~ s/>/&gt;/g; $_[1] =~ s/\r?\n/<br>/g; Mojo::ByteStream->new($_[1])});
 }
 
 1;

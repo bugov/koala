@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+  <channel>
+    <title><%= config->{blog}->{title} %></title>
+    <link><%= config->{blog}->{link} %></link>
+    <description><%= config->{blog}->{description} %></description>
+    <language><%= config->{blog}->{language} %></language>
+    <pubDate><%= dt $list->[0]->modify_at, 'GMT'%></pubDate>
+    <lastBuildDate><%= dt time, 'GMT' %></lastBuildDate>
+    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+    <generator>Koala blogging system</generator>
+    <managingEditor><%= config->{blog}->{email} %></managingEditor>
+    <webMaster><%= config->{blog}->{email} %></webMaster>
+% for my $item (@$list) {
+    <item>
+      <title><%= $item->title %></title>
+      <link><%= config->{blog}->{link} . $item->url %></link>
+      <description><%= $item->legend %></description>
+      <pubDate><%= dt $item->create_at, 'GMT' %></pubDate>
+      <guid><%= config->{blog}->{link} . $item->url %></guid>
+    </item>
+% }
+  </channel>
+</rss>

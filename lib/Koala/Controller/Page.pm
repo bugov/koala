@@ -22,6 +22,19 @@ sub list {
   $self->render(list => $list, count => $count, limit => $size, page => $page);
 }
 
+sub feed {
+  my $self = shift;
+  my $list = eval {
+    Koala::Model::Page::Manager->get_pages(
+      where => [status => {ge => 50}],
+      sort_by => '-id',
+      limit => $size,
+      offset => 0
+    )
+  } or return $self->not_found;
+  $self->render(list => $list);
+}
+
 sub show {
   my $self = shift;
   my $url = $self->add_last_slash($self->param('url'));

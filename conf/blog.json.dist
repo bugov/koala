@@ -1,5 +1,10 @@
 {
   "blog": {
-    "template": "template name"
+    "template": "template name",
+    "title": "Title",
+    "description": "Description",
+    "link": "http://127.0.0.1/",
+    "language": "en-us",
+    "email": "me@example.com"
   }
 }
