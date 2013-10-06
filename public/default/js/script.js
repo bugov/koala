@@ -12,17 +12,18 @@ function translit(str) {
     "м":"m","н":"n","о":"o","п":"p","р":"r",
     "с":"s","т":"t","у":"u","ф":"f","х":"h",
     "ц":"ts","ч":"ch","ш":"sh","щ":"sch","ъ":"y",
-    "ы":"ji","ь":"","э":"e","ю":"ju","я":"ja",' ':'-', 'ё':'e', 'Ё':'E',
+    "ы":"ji","ь":"","э":"e","ю":"ju","я":"ja",' ':'-',
+    'ё':'e', 'Ё':'E'
   };
   
   var ary = str.split('');
-  var re  = /[a-z0-9]/i;
+  var re  = /[a-z0-9\-]/i;
   
   for (var i = 0; i < str.length; ++i) {
     if (!ary[i].match(re)) {
       ary[i] = (tr[ary[i]] != undefined ? tr[ary[i]] : '');
     }
   }
-  str = ary.join('');
+  str = ary.join('').replace(/-+/g, '-');
   return str;
 }

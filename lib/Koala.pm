@@ -32,7 +32,8 @@ sub startup {
 
   # Router
   my $r = $self->routes;
-    $r->route(':page', page => qr/\d*/)->to('page#list', page => 1, namespace => 'Koala::Controller');
+    $r->route(':page', page => qr/\d*/)->to('page#list', page => 1, namespace => 'Koala::Controller')
+      ->name('page_pagged');
   
   # Access
   my $user  = $r->bridge('/user' )->to(cb => sub {shift->user->is_user () ? 1 : 0});
@@ -41,52 +42,52 @@ sub startup {
   
   # User
   my $u = $r->route('user')->to('user#', namespace => 'Koala::Controller');
-    $u->get ('login') ->to('#login_form')->name('user_login_form');
-    $u->post('login') ->to('#login')     ->name('user_login');
-    $u->get ('reg')   ->to('#reg_form')  ->name('user_reg_form');
-    $u->post('reg')   ->to('#reg')       ->name('user_reg');
+    $u->get ('login/') ->to('#login_form')->name('user_login_form');
+    $u->post('login/') ->to('#login')     ->name('user_login');
+    $u->get ('reg/')   ->to('#reg_form')  ->name('user_reg_form');
+    $u->post('reg/')   ->to('#reg')       ->name('user_reg');
   # User for Users
   $u = $user->to('user#', namespace => 'Koala::Controller');
-    $u->get ('home')  ->to('#home')  ->name('user_home');
-    $u->get ('logout')->to('#logout')->name('user_logout');
+    $u->get ('home/')  ->to('#home')  ->name('user_home');
+    $u->get ('logout/')->to('#logout')->name('user_logout');
   # User for Admins
   $u = $admin->route('user')->to('user#', namespace => 'Koala::Controller::Admin');
-    $u->get ('list/:page')->to('#list', page => 1)->name('admin_user_list');
-    $u->get (':id')->to('#show')->name('admin_user_show');
-    $u->post(':id')->to('#edit')->name('admin_user_edit');
+    $u->get ('list/:page/')->to('#list', page => 1)->name('admin_user_list');
+    $u->get (':id/')->to('#show')->name('admin_user_show');
+    $u->post(':id/')->to('#edit')->name('admin_user_edit');
   
   # Page & comments
-  $r->post('page/:id/comment')->to('comment#create', namespace => 'Koala::Controller')->name('page_comment');
-  $r->get('page/:id/comment/load')->to('comment#load', namespace => 'Koala::Controller')->name('page_comment_load');
+  $r->post('page/:id/comment/')->to('comment#create', namespace => 'Koala::Controller')->name('page_comment');
+  $r->get('page/:id/comment/load/')->to('comment#load', namespace => 'Koala::Controller')->name('page_comment_load');
   # Page & comments for Admins
   my $p = $admin->route('page')->to('page#', namespace => 'Koala::Controller::Admin');
-    $p->get ('comments/:page')->to('comment#list', page => 1)->name('admin_comment_list');
-    $p->get ('comments/delete/:id')->to('comment#delete')->name('admin_comment_delete');
-    $p->post('comments/:id')->to('comment#edit')->name('admin_comment_edit');
-    $p->get ('list/:page')->to('#list', page => 1)->name('admin_page_list');
-    $p->get ('new') ->to(template => 'page/admin/form')->name('admin_page_create_form');
-    $p->post('new') ->to('#create')->name('admin_page_create');
-    $p->get (':id') ->to('#show')->name('admin_page_show');
-    $p->post(':id') ->to('#edit')->name('admin_page_edit');
-    $p->get ('comment/:id')->to('comment#show')->name('admin_comment_show');
-    $p->post('picture/crop/:id')->to('#picture_crop')->name('admin_page_picture_crop');
+    $p->get ('comments/:page/')->to('comment#list', page => 1)->name('admin_comment_list');
+    $p->get ('comments/delete/:id/')->to('comment#delete')->name('admin_comment_delete');
+    $p->post('comments/:id/')->to('comment#edit')->name('admin_comment_edit');
+    $p->get ('list/:page/')->to('#list', page => 1)->name('admin_page_list');
+    $p->get ('new/') ->to(template => 'page/admin/form')->name('admin_page_create_form');
+    $p->post('new/') ->to('#create')->name('admin_page_create');
+    $p->get (':id/') ->to('#show')->name('admin_page_show');
+    $p->post(':id/') ->to('#edit')->name('admin_page_edit');
+    $p->get ('comment/:id/')->to('comment#show')->name('admin_comment_show');
+    $p->post('picture/crop/:id/')->to('#picture_crop')->name('admin_page_picture_crop');
   # Category for Admins
   my $c = $admin->route('category')->to('category#', namespace => 'Koala::Controller::Admin');
-    $c->get ('list/:page')->to('#list', page => 1)->name('admin_category_list');
-    $c->get ('new') ->to(template => 'category/admin/form')->name('admin_category_create_form');
-    $c->post('new') ->to('#create')->name('admin_category_create');
-    $c->get (':id') ->to('#show')->name('admin_category_show');
-    $c->post(':id') ->to('#edit')->name('admin_category_edit');
+    $c->get ('list/:page/')->to('#list', page => 1)->name('admin_category_list');
+    $c->get ('new/') ->to(template => 'category/admin/form')->name('admin_category_create_form');
+    $c->post('new/') ->to('#create')->name('admin_category_create');
+    $c->get (':id/') ->to('#show')->name('admin_category_show');
+    $c->post(':id/') ->to('#edit')->name('admin_category_edit');
   # Tag for Admins
   my $t = $admin->route('tag')->to('tag#', namespace => 'Koala::Controller::Admin');
-    $t->get ('list/:page')->to('#list', page => 1)->name('admin_tag_list');
-    $t->get ('new') ->to(template => 'tag/admin/form')->name('admin_tag_create_form');
-    $t->post('new') ->to('#create')->name('admin_tag_create');
-    $t->get (':id') ->to('#show')->name('admin_tag_show');
-    $t->post(':id') ->to('#edit')->name('admin_tag_edit');
+    $t->get ('list/:page/')->to('#list', page => 1)->name('admin_tag_list');
+    $t->get ('new/') ->to(template => 'tag/admin/form')->name('admin_tag_create_form');
+    $t->post('new/') ->to('#create')->name('admin_tag_create');
+    $t->get (':id/') ->to('#show')->name('admin_tag_show');
+    $t->post(':id/') ->to('#edit')->name('admin_tag_edit');
   # File
   my $f = $r->route('file')->to('file#', namespace => 'Koala::Controller');
-    $f->post('upload')->to('#upload')->name('file_upload');
+    $f->post('upload/')->to('#upload')->name('file_upload');
     
   # Show Page
   $r->get('*url')->to('page#show', namespace => 'Koala::Controller')->name('page_show');

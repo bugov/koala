@@ -65,6 +65,7 @@ __PACKAGE__->meta->setup(
 our %possible_status = (
   'deleted' => 0,
   'new'     => 10,
+  'no links'=> 40,
   'closed'  => 50,  # No comments, but visible
   'opened'  => 60,  # Comments are opened, visible
 );

@@ -2,7 +2,7 @@
 % for my $c (@$list) {
   <option
     <% if ($c->id == $default) { %> selected="selected" <% } %>
-    value="<%= $c->id %>"
+    value="<%= $c->id %>" data-url="<%= $c->url %>"
   ><%= $c->title %> [<%= $c->url %>]</option>
 % }
 </select>

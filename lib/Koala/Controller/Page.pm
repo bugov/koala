@@ -19,18 +19,25 @@ sub list {
     )
   } or return $self->not_found;
   my $count = Koala::Model::Page::Manager->get_pages_count(where => [status => {ge => 50}]);
-  $self->render(list => $list, count => $count, limit => $size);
+  $self->render(list => $list, count => $count, limit => $size, page => $page);
 }
 
 sub show {
   my $self = shift;
-  my $url = $self->remove_last_slash($self->param('url'));
-  my $page = eval{Koala::Model::Page->new(url => $url)->load} or return $self->list_by_category;
+  my $url = $self->add_last_slash($self->param('url'));
+  my $page = eval{
+    Koala::Model::Page->new(url => $url)->load
+  } or return $self->list_by_category;
+  
+  $self->not_found if $page->status < 40; # no links, but accessable
+  
   my $comment_list = Koala::Model::Comment::Manager
     ->get_comments(where => [page_id => $page->id, status => {gt => 0}], sort_by => '-id', limit => $size);
+    
   my $comment_count = Koala::Model::Comment::Manager
     ->get_comments_count(where => [page_id => $page->id], status => {gt => 0});
-  $self->render(page => $page, comment_list => $comment_list, comment_count => $comment_count);
+    
+  $self->render(page => $page, comment_list => $comment_list, comment_count => $comment_count, limit => $size);
 }
 
 sub list_by_category {
@@ -53,6 +60,13 @@ sub remove_last_slash {
   my $self = shift;
   my $url = shift;
   chop $url if $url =~ /\/$/;
+  return $url;
+}
+
+sub add_last_slash {
+  my $self = shift;
+  my $url = shift;
+  $url .= '/' if $url !~ /\/$/;
   return $url;
 }
 
