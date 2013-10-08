@@ -1,7 +1,9 @@
 % layout 'default';
 % title 'Tag list';
 
-<a href="<%= url_for 'admin_tag_create' %>" class="btn btn-success alignright btn-new">Create new</a>
+% content_for control => begin
+<a href="<%= url_for 'admin_tag_create' %>" class="btn btn-success">Create new</a>
+% end
 
 <table class="wide table">
   <tr>

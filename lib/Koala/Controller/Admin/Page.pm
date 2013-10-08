@@ -19,6 +19,20 @@ sub list {
   $self->render('page/admin/list', page_list => $page_list, page_count => $page_count, limit => $self->size);
 }
 
+# Method: list_of_pages
+#   List of single pages (not post).
+sub list_of_pages {
+  my $self = shift;
+  my $page_list = eval { Koala::Model::Page::Manager->get_pages(
+    query => [
+      status => 40,
+      priority => {ne => undef},
+    ],
+    sort_by => 'priority'
+  ) };
+  $self->render('page/admin/list_of_pages', list => $page_list);
+}
+
 # Method: show
 #   Show one page for editing.
 sub show {
@@ -71,8 +85,12 @@ sub _dehydrate {
   }
   
   $page->setTags(title => split /, /, $self->param('tags'));
+  $page->save;
+  $page->priority($page->id);
 }
 
+# Method: picture_crop
+#   Crop picture.
 sub picture_crop {
   my $self = shift;
   my $file = eval { Koala::Model::File->new(id => $self->param('id'))->load }
@@ -93,6 +111,56 @@ sub picture_crop {
   $file->save();
   
   return $self->render(json => {error => 0, img_src => $file->get_url});
+}
+
+sub up {
+  my $self = shift;
+  my $page = eval { Koala::Model::Page->new(id => $self->param('id'))->load } or return $self->not_found;
+  my $prev = eval { Koala::Model::Page::Manager->get_pages(
+    query => [
+      status => 40,
+      priority => {lt => $page->priority},
+    ],
+    limit => 1,
+    order_by => ['priority']
+  ) };
+  return $self->redirect_to('admin_list_of_pages') unless @$prev;
+  $prev = $prev->[0];
+  
+  my $tmp = $page->priority;
+  $page->priority($prev->priority);
+  $prev->priority(undef);
+  $prev->save;
+  $page->save;
+  $prev->priority($tmp);
+  $prev->save;
+  
+  return $self->redirect_to('admin_list_of_pages');
+}
+
+sub down {
+  my $self = shift;
+  my $page = eval { Koala::Model::Page->new(id => $self->param('id'))->load } or return $self->not_found;
+  my $prev = eval { Koala::Model::Page::Manager->get_pages(
+    query => [
+      status => 40,
+      priority => {gt => $page->priority},
+    ],
+    limit => 1,
+    order_by => ['priority']
+  ) };
+  return $self->redirect_to('admin_list_of_pages') unless @$prev;
+  $prev = $prev->[0];
+  
+  my $tmp = $page->priority;
+  $page->priority($prev->priority);
+  $prev->priority(undef);
+  $prev->save;
+  $page->save;
+  $prev->priority($tmp);
+  $prev->save;
+  
+  return $self->redirect_to('admin_list_of_pages');
 }
 
 1;

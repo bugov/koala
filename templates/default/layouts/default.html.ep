@@ -3,25 +3,25 @@
   <head>
     <meta charset="utf-8">
     <title><%= title %></title>
-    %= stylesheet '/css/bootstrap.min.css'
-    %= stylesheet '/css/bootstrap-responsive.min.css'
-    %= stylesheet '/css/bootstrap-datetimepicker.min.css'
-    %= stylesheet '/jcrop/css/jquery.Jcrop.min.css'
-    %= stylesheet '/css/style.css'
-    %= javascript '/js/html5.js'
-    %= javascript '/js/jquery.min.js'
-    %= javascript '/js/bootstrap.min.js'
-    %= javascript '/js/bootstrap-datetimepicker.min.js'
-    %= javascript '/ckeditor/ckeditor.js'
-    %= javascript '/ckeditor/config.js'
-    %= javascript '/jcrop/js/jquery.Jcrop.min.js'
-    %= javascript '/js/script.js'
+    %= stylesheet '/koala/css/bootstrap.min.css'
+    %= stylesheet '/koala/css/bootstrap-responsive.min.css'
+    %= stylesheet '/koala/css/bootstrap-datetimepicker.min.css'
+    %= stylesheet '/koala/jcrop/css/jquery.Jcrop.min.css'
+    %= stylesheet '/koala/css/style.css'
+    %= javascript '/koala/js/html5.js'
+    %= javascript '/koala/js/jquery.min.js'
+    %= javascript '/koala/js/bootstrap.min.js'
+    %= javascript '/koala/js/bootstrap-datetimepicker.min.js'
+    %= javascript '/koala/ckeditor/ckeditor.js'
+    %= javascript '/koala/ckeditor/config.js'
+    %= javascript '/koala/jcrop/js/jquery.Jcrop.min.js'
+    %= javascript '/koala/js/script.js'
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="/"><img src="/img/admin/logo.png"> Koala</a>
+          <a class="brand" href="/"><img src="/koala/img/admin/logo.png"> Koala</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li>
@@ -52,7 +52,12 @@
       </div>
     </div>
     <div class="container admin">
-      <h1 class="title"><%= title %></h1>
+      <div class="row-fluid">
+        <h1 class="title span4"><%= title %></h1>
+        <div class="control span8" style="text-align:right; margin-top:10px;">
+          <%= content_for 'control' %>
+        </div>
+      </div>
       %= content
     </div>
   </body>

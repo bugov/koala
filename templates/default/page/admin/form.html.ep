@@ -123,12 +123,12 @@
   var category_url = $($('select[name="category_id"]>option:selected').get(0)).attr('data-url');
   
   $('input[name="title"]').keyup(function() {
-    $('input[name="url"]').val( category_url + '/' + translit($(this).val()).toLowerCase() + '/' );
+    $('input[name="url"]').val( category_url + '/' + translit($(this).val()).toLowerCase() );
   });
   
   $('select[name="category_id"]').change(function() {
     category_url = $(this).find('option:selected').attr('data-url');
-    $('input[name="url"]').val( category_url + '/' + translit($(this).val()).toLowerCase() + '/' );
+    $('input[name="url"]').val( category_url + '/' + translit($(this).val()).toLowerCase() );
   });
 % }
   

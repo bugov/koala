@@ -21,6 +21,7 @@ __PACKAGE__->meta->setup(
     author_id   => { type => 'integer' },
     approver_id => { type => 'integer' },
     owner_id    => { type => 'integer' },
+    priority    => { type => 'integer' },
   ],
   pk_columns => 'id',
   unique_key => 'url',
@@ -168,6 +169,7 @@ __END__
     `author_id` int(11) unsigned NOT NULL,
     `approver_id` int(11) unsigned DEFAULT NULL,
     `owner_id` int(11) unsigned DEFAULT NULL,
+    `priority` int(11) unsigned DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `url` (`url`)
   ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;

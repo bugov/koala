@@ -73,6 +73,9 @@ sub startup {
     $p->post(':id/') ->to('#edit')->name('admin_page_edit');
     $p->get ('comment/:id/')->to('comment#show')->name('admin_comment_show');
     $p->post('picture/crop/:id/')->to('#picture_crop')->name('admin_page_picture_crop');
+    $p->get (':id/up') ->to('#up')->name('admin_page_up');
+    $p->get (':id/down') ->to('#down')->name('admin_page_down');
+    $p->get ('list/of/pages')->to('#list_of_pages')->name('admin_list_of_pages');
   # Category for Admins
   my $c = $admin->route('category')->to('category#', namespace => 'Koala::Controller::Admin');
     $c->get ('list/:page/')->to('#list', page => 1)->name('admin_category_list');

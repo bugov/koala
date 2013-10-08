@@ -37,7 +37,7 @@ sub feed {
 
 sub show {
   my $self = shift;
-  my $url = $self->add_last_slash($self->param('url'));
+  my $url = $self->remove_last_slash($self->param('url'));
   my $page = eval{
     Koala::Model::Page->new(url => $url)->load
   } or return $self->list_by_category;

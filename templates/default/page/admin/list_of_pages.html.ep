@@ -1,9 +1,8 @@
 % layout 'default';
-% title 'Page list';
+% title 'Stand alone pages';
 
 % content_for control => begin
-  <a href="<%= url_for 'admin_list_of_pages' %>" class="btn btn-link">Stand alone pages</a>
-  <a href="<%= url_for 'admin_page_create' %>" class="btn btn-success btn-new">Create new</a>
+<a href="<%= url_for 'admin_page_create' %>" class="btn btn-success btn-new">Create new</a>
 % end
 
 <table class="wide table">
@@ -15,8 +14,16 @@
     <th>Status</th>
     <th>Create date</th>
     <th>Author</th>
+    <th></th>
   </tr>
-<% for my $page (@$page_list) { %>
+<% unless (@$list) { %>
+  <tr>
+    <td colspan=8>
+      <div class="alert alert-error">No pages here</div>
+    </td>
+  </tr>
+<% } %>
+<% for my $page (@$list) { %>
   <tr onClick="window.location='<%= url_for 'admin_page_show', id => $page->id %>'">
     <td><%= $page->id %></td>
     <td><%= $page->url %></td>
@@ -25,8 +32,10 @@
     <td><%= $page->status %></td>
     <td><%= dt $page->create_at %></td>
     <td><%= $page->author->username %></td>
+    <td>
+      <a href="<%= url_for 'admin_page_up', id => $page->id %>">&uArr;</a>
+      <a href="<%= url_for 'admin_page_down', id => $page->id %>">&dArr;</a>
+    </td>
   </tr>
 <% } %>
 </table>
-
-%= paginator 'admin_page_list', int stash('page'), $page_count, $limit
