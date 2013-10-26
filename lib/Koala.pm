@@ -26,6 +26,7 @@ sub startup {
     $FindBin::Bin.'/../public/custom/'.$config->{template},
     $FindBin::Bin.'/../public/default',
     $FindBin::Bin.'/../public/upload',
+    $FindBin::Bin.'/../public',
   ]);
   
   # Documentation browser under "/perldoc"

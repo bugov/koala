@@ -34,6 +34,7 @@ sub list {
 sub show {
   my $self = shift;
   my ($model) = $self->_get_model();
+
   my $item = $model->new(id => int $self->param('id'))->load;
   $self->render(Mojo::Util::decamelize($self->model_name) . '/admin/form', item => $item);
 }

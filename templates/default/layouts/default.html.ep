@@ -3,19 +3,19 @@
   <head>
     <meta charset="utf-8">
     <title><%= title %></title>
-    %= stylesheet '/koala/css/bootstrap.min.css'
-    %= stylesheet '/koala/css/bootstrap-responsive.min.css'
-    %= stylesheet '/koala/css/bootstrap-datetimepicker.min.css'
-    %= stylesheet '/koala/jcrop/css/jquery.Jcrop.min.css'
-    %= stylesheet '/koala/css/style.css'
-    %= javascript '/koala/js/html5.js'
-    %= javascript '/koala/js/jquery.min.js'
-    %= javascript '/koala/js/bootstrap.min.js'
-    %= javascript '/koala/js/bootstrap-datetimepicker.min.js'
-    %= javascript '/koala/ckeditor/ckeditor.js'
-    %= javascript '/koala/ckeditor/config.js'
-    %= javascript '/koala/jcrop/js/jquery.Jcrop.min.js'
-    %= javascript '/koala/js/script.js'
+    %= stylesheet '/default/koala/css/bootstrap.min.css'
+    %= stylesheet '/default/koala/css/bootstrap-responsive.min.css'
+    %= stylesheet '/default/koala/css/bootstrap-datetimepicker.min.css'
+    %= stylesheet '/default/koala/jcrop/css/jquery.Jcrop.min.css'
+    %= stylesheet '/default/koala/css/style.css'
+    %= javascript '/default/koala/js/html5.js'
+    %= javascript '/default/koala/js/jquery.min.js'
+    %= javascript '/default/koala/js/bootstrap.min.js'
+    %= javascript '/default/koala/js/bootstrap-datetimepicker.min.js'
+    %= javascript '/default/koala/ckeditor/ckeditor.js'
+    %= javascript '/default/koala/ckeditor/config.js'
+    %= javascript '/default/koala/jcrop/js/jquery.Jcrop.min.js'
+    %= javascript '/default/koala/js/script.js'
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
