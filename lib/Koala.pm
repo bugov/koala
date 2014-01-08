@@ -36,7 +36,7 @@ sub startup {
   # Router
   my $r = $self->routes;
     $r->route(':page', page => qr/\d*/)->to('page#list', page => 1, namespace => 'Koala::Controller')
-      ->name('page_pagged');
+      ->name('page_list');
   
   # Access
   my $user  = $r->bridge('/user' )->to(cb => sub {shift->user->is_user () ? 1 : 0});
@@ -252,9 +252,9 @@ sub addHelpers {
   
   # Simple helpers:
   $self->helper('config' => sub { Koala::Entity::Config->new->get_config });
-  $self->helper('error_json' => sub { $_[0]->render(json => {code => 500, @_[1..$#_]}) });
-  $self->helper('not_found' => sub { shift->render(template => 'not_found', code => 404) });
-  $self->helper('not_found_json' => sub { shift->render(json => {error => 404, code => 404, 'message' => 'Page not found'}) });
+  $self->helper('error_json' => sub { $_[0]->render(json => {status => 500, @_[1..$#_]}) });
+  $self->helper('not_found' => sub { shift->render(template => 'not_found', status => 404) });
+  $self->helper('not_found_json' => sub { shift->render(json => {error => 404, status => 404, 'message' => 'Page not found'}) });
   $self->helper('crlf' => sub { $_[1] =~ s/</&lt;/g; $_[1] =~ s/>/&gt;/g; $_[1] =~ s/\r?\n/<br>/g; Mojo::ByteStream->new($_[1])});
 }
 

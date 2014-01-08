@@ -5,7 +5,7 @@ use Koala::Model::Comment;
 use Koala::Model::Category;
 use Koala::Model::Tag;
 
-my $size = 20;
+my $size = 5;
 
 sub list {
   my $self = shift;
